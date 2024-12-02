@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Roboto } from "next/font/google";
+import { Prompt } from "next/font/google";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: "A hub for all your assets",
 };
 
-const roboto = Roboto({
+const prompt = Prompt({
   weight: ["400", "700"],
   style: ["normal", "italic"],
   subsets: ["latin"],
@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={roboto.className}>{children}</body>
+      <body className={prompt.className}>{children}</body>
     </html>
   );
 }
