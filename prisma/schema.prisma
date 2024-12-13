@@ -1,0 +1,102 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Employees {
+  id        String    @id @default(cuid())
+  username  String
+  email     String
+  password  String
+  firstName String
+  lastName  String
+  phone     String?
+  hireDate  DateTime
+  exitDate  DateTime?
+  role_id   String
+  role      Roles     @relation(fields: [role_id], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  Departments Departments[]
+  Devices     Devices[]
+  RequestBy   Requests[]    @relation("requestBy")
+  ApprovedBy  Requests[]    @relation("approvedBy")
+  reportBy    Repairs[]     @relation("reportBy")
+  assignTo    Repairs[]     @relation("assignTo")
+}
+
+model Roles {
+  id            String      @id @default(cuid())
+  name          String
+  department_id String
+  department    Departments @relation(fields: [department_id], references: [id])
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  Employees Employees[]
+}
+
+model Departments {
+  id         String    @id @default(cuid())
+  name       String
+  manager_id String
+  manager    Employees @relation(fields: [manager_id], references: [id])
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  Roles Roles[]
+}
+
+model Devices {
+  id             String    @id @default(cuid())
+  name           String
+  serial         String
+  purchaseDate   DateTime
+  warrantyExpiry DateTime?
+  status         String
+  employee_id    String
+  employee       Employees @relation(fields: [employee_id], references: [id])
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  Requests Requests[]
+  Repairs  Repairs[]
+}
+
+model Requests {
+  id            String    @id @default(cuid())
+  employee_id   String
+  employee      Employees @relation("requestBy", fields: [employee_id], references: [id])
+  device_id     String
+  device        Devices   @relation(fields: [device_id], references: [id])
+  type          String
+  date          DateTime
+  status        String
+  approvedBy_id String
+  approvedBy    Employees @relation("approvedBy", fields: [approvedBy_id], references: [id])
+  approvedDate  DateTime
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Repairs {
+  id          String    @id @default(cuid())
+  device_id   String
+  device      Devices   @relation(fields: [device_id], references: [id])
+  reportBy_id String
+  reportBy    Employees @relation("reportBy", fields: [reportBy_id], references: [id])
+  description String
+  reportDate  DateTime
+  status      String
+  assignTo_id String
+  assignTo    Employees @relation("assignTo", fields: [assignTo_id], references: [id])
+  repairDate  DateTime
+  cost        Float
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}

@@ -1,0 +1,16 @@
+services:
+  postgres:
+    container_name: assets-hub-db
+    image: "postgres:alpine"
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=assets_hub
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=toor
+    volumes:
+      - pgdb:/var/lib/postgresql/data
+
+volumes:
+  pgdb:
