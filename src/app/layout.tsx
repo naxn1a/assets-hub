@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Prompt } from "next/font/google";
 import "./globals.css";
 import Provider from "@/provider";
+import Sidebar from "@/components/sidebar/SidebarProvider";
 
 export const metadata: Metadata = {
   title: "Assets Hub",
@@ -21,7 +22,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={prompt.className}>
-        <Provider>{children}</Provider>
+        <Provider>
+          <Sidebar>
+            <div>{children}</div>
+          </Sidebar>
+        </Provider>
       </body>
     </html>
   );
