@@ -1,6 +1,6 @@
 services:
   postgres:
-    container_name: assets-hub-db
+    container_name: assets_hub_db
     image: "postgres:alpine"
     restart: always
     ports:
