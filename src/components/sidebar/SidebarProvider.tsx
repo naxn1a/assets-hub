@@ -12,7 +12,7 @@ export default function SidebarProvider({
       <Sidebar />
       <main className="flex flex-col w-full h-full">
         <Navbar />
-        {children}
+        <div className="mx-8">{children}</div>
       </main>
     </SidebarProv>
   );

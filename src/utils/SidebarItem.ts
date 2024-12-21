@@ -1,29 +1,29 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
+import { Home, User, Package, Clipboard, Settings } from "lucide-react";
 
 export default [
   {
     title: "Home",
-    url: "#",
+    url: "/",
     icon: Home,
   },
   {
-    title: "Inbox",
-    url: "#",
-    icon: Inbox,
+    title: "Users",
+    url: "/users",
+    icon: User,
   },
   {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
+    title: "Assets",
+    url: "/assets",
+    icon: Package,
   },
   {
-    title: "Search",
-    url: "#",
-    icon: Search,
+    title: "Documents",
+    url: "/documents",
+    icon: Clipboard,
   },
   {
     title: "Settings",
-    url: "#",
+    url: "/settings",
     icon: Settings,
   },
 ];

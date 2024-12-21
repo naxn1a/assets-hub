@@ -16,13 +16,15 @@ import { Button } from "../ui/button";
 export default function Sidebar() {
   return (
     <SBar className="shadow-2xl">
-      <SidebarHeader>Assets Hub</SidebarHeader>
+      <SidebarHeader className="text-2xl font-semibold select-none">
+        <Link href="/">Assets Hub</Link>
+      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
               {SidebarItem.map((item) => (
-                <SidebarMenuItem key={item.title}>
+                <SidebarMenuItem key={item.title} className="hover:bg-gray-100 rounded-xl duration-300">
                   <SidebarMenuButton asChild>
                     <Link href={item.url}>
                       <item.icon />
