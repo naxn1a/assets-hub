@@ -7,8 +7,8 @@ export default [
     icon: Home,
   },
   {
-    title: "Users",
-    url: "/users",
+    title: "Employees",
+    url: "/employees",
     icon: User,
   },
   {

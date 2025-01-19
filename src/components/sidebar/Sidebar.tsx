@@ -9,7 +9,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import SidebarItem from "@/utils/SidebarItem";
+import SidebarItem from "@/utils/data/SidebarItem";
 import Link from "next/link";
 import { Button } from "../ui/button";
 
@@ -24,7 +24,10 @@ export default function Sidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {SidebarItem.map((item) => (
-                <SidebarMenuItem key={item.title} className="hover:bg-gray-100 rounded-xl duration-300">
+                <SidebarMenuItem
+                  key={item.title}
+                  className="hover:bg-gray-100 rounded-xl duration-300"
+                >
                   <SidebarMenuButton asChild>
                     <Link href={item.url}>
                       <item.icon />
@@ -38,7 +41,7 @@ export default function Sidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <Button>Logout</Button>
+        <Button className="text-lg font-semibold">Logout</Button>
       </SidebarFooter>
     </SBar>
   );

@@ -1,9 +1,7 @@
-import Table from "@/components/table/Table";
-
 export default function Documents() {
   return (
     <div>
-      <Table />
+      <h1>Documents</h1>
     </div>
   );
 }
