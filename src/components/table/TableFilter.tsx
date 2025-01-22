@@ -37,7 +37,7 @@ export default function <TData>({ table, option }: TableSearchProps<TData>) {
           }}
         >
           <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder={select.name} />
+            <SelectValue placeholder={`Filter ${select.name}`} />
           </SelectTrigger>
           <SelectContent>
             {select.data.map((item, index) => (

@@ -1,6 +1,8 @@
+import Link from "next/link";
 import Table from "@/components/table/Table";
 import { EmployeeMock } from "@/utils/data/Employee";
-import { EmployeeCol } from "./EmpCol";
+import { EmployeeColumns } from "./colums";
+import { Button } from "@/components/ui/button";
 
 export default function Employees() {
   const option = {
@@ -32,7 +34,19 @@ export default function Employees() {
   };
   return (
     <div>
-      <Table columns={EmployeeCol} data={EmployeeMock} option={option} />
+      <h1 className="text-3xl font-semibold">Employees</h1>
+      <Table
+        columns={EmployeeColumns}
+        data={EmployeeMock}
+        search="username"
+        option={option}
+      >
+        <div className="flex justify-end">
+          <Link href="/employees/create">
+            <Button>Create</Button>
+          </Link>
+        </div>
+      </Table>
     </div>
   );
 }

@@ -10,8 +10,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Checkbox } from "@/components/ui/checkbox";
 import TableColumnHeader from "@/components/table/TableColumnHeader";
+import Link from "next/link";
 
-export const EmployeeCol: ColumnDef<any>[] = [
+export const EmployeeColumns: ColumnDef<any>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -79,7 +80,7 @@ export const EmployeeCol: ColumnDef<any>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const payment = row.original;
+      const data = row.original;
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -89,7 +90,9 @@ export const EmployeeCol: ColumnDef<any>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem>Edit</DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href={`/employees/${data.username}`}>Edit</Link>
+            </DropdownMenuItem>
             <DropdownMenuItem>Delete</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

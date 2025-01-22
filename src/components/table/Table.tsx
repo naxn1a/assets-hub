@@ -21,19 +21,20 @@ import TableViewOptions from "./TableViewOptions";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  search?: string;
   option?: {
     search: string;
-    filters: {
-      name: string;
-      data: string[];
-    }[];
+    filters: any[];
   };
+  children?: React.ReactNode;
 }
 
 export default function <TData, TValue>({
   columns,
   data,
+  search,
   option,
+  children,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -61,11 +62,10 @@ export default function <TData, TValue>({
 
   return (
     <section>
+      {children}
       <TableData table={table} columns={columns}>
         <div className="flex items-center py-4 gap-4">
-          {option?.search && (
-            <TableSearch table={table} search={option.search} />
-          )}
+          {search && <TableSearch table={table} search={search} />}
           {option?.filters && (
             <TableFilter table={table} option={option.filters} />
           )}

@@ -11,15 +11,49 @@ export type EmployeeType = {
   hiredate: string;
 };
 
-export const EmployeeColumns = [
-  "username",
-  "email",
-  "firstname",
-  "lastname",
-  "phone",
-  "department",
-  "role",
-  "hiredate",
+export const EmployeeData = [
+  {
+    name: "username",
+    placeholder: "Username",
+    type: "text",
+  },
+  {
+    name: "email",
+    placeholder: "Email",
+    type: "text",
+  },
+  {
+    name: "firstname",
+    placeholder: "Firstname",
+    type: "text",
+  },
+  {
+    name: "lastname",
+    placeholder: "Lastname",
+    type: "text",
+  },
+  {
+    name: "phone",
+    placeholder: "Phone",
+    type: "text",
+  },
+  {
+    name: "department",
+    placeholder: "Department",
+    type: "select",
+    options: [],
+  },
+  {
+    name: "role",
+    placeholder: "Role",
+    type: "select",
+    options: [],
+  },
+  {
+    name: "hiredate",
+    placeholder: "Hire Date",
+    type: "date",
+  },
 ];
 
 export const EmployeeMock: EmployeeType[] = [
