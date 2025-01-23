@@ -7,96 +7,93 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Employees {
-  id        String    @id @default(cuid())
-  username  String
-  email     String
-  password  String
-  firstName String
-  lastName  String
-  phone     String?
-  hireDate  DateTime
-  exitDate  DateTime?
-  role_id   String
-  role      Roles     @relation(fields: [role_id], references: [id])
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-
-  Departments Departments[]
-  Devices     Devices[]
-  RequestBy   Requests[]    @relation("requestBy")
-  ApprovedBy  Requests[]    @relation("approvedBy")
-  reportBy    Repairs[]     @relation("reportBy")
-  assignTo    Repairs[]     @relation("assignTo")
+model Department {
+  id         Int        @id @default(autoincrement())
+  name       String     @unique
+  created_at DateTime   @default(now())
+  updated_at DateTime   @updatedAt
+  role       Role[]
+  employee   Employee[]
 }
 
-model Roles {
-  id            String      @id @default(cuid())
-  name          String
-  department_id String
-  department    Departments @relation(fields: [department_id], references: [id])
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
-
-  Employees Employees[]
+model Role {
+  id            Int        @id @default(autoincrement())
+  name          String     @unique
+  department_id Int
+  department    Department @relation(fields: [department_id], references: [id])
+  created_at    DateTime   @default(now())
+  updated_at    DateTime   @updatedAt
+  employee      Employee[]
 }
 
-model Departments {
-  id         String    @id @default(cuid())
-  name       String
-  manager_id String
-  manager    Employees @relation(fields: [manager_id], references: [id])
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-
-  Roles Roles[]
+model Employee {
+  id                 String               @id @default(cuid())
+  username           String
+  email              String
+  password           String
+  first_name         String
+  last_name          String
+  phone              String
+  hire_date          DateTime
+  exit_date          DateTime?
+  department_id      Int
+  department         Department           @relation(fields: [department_id], references: [id])
+  role_id            Int
+  role               Role                 @relation(fields: [role_id], references: [id])
+  created_at         DateTime             @default(now())
+  updated_at         DateTime             @updatedAt
+  Borrowing          Borrowing[]
+  MaintenanceRequest MaintenanceRequest[]
+  MaintenanceReport  MaintenanceReport[]
 }
 
-model Devices {
-  id             String    @id @default(cuid())
-  name           String
-  serial         String
-  purchaseDate   DateTime
-  warrantyExpiry DateTime?
-  status         String
-  employee_id    String
-  employee       Employees @relation(fields: [employee_id], references: [id])
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
-
-  Requests Requests[]
-  Repairs  Repairs[]
+model Device {
+  id                 String               @id @default(cuid())
+  lot_number         String
+  serial_number      String               @unique
+  name               String
+  purchase_date      DateTime
+  warranty_expiry    DateTime?
+  status             String
+  created_at         DateTime             @default(now())
+  updated_at         DateTime             @updatedAt
+  Borrowing          Borrowing[]
+  MaintenanceRequest MaintenanceRequest[]
 }
 
-model Requests {
-  id            String    @id @default(cuid())
-  employee_id   String
-  employee      Employees @relation("requestBy", fields: [employee_id], references: [id])
-  device_id     String
-  device        Devices   @relation(fields: [device_id], references: [id])
-  type          String
-  date          DateTime
-  status        String
-  approvedBy_id String
-  approvedBy    Employees @relation("approvedBy", fields: [approvedBy_id], references: [id])
-  approvedDate  DateTime
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-}
-
-model Repairs {
-  id          String    @id @default(cuid())
+model Borrowing {
+  id          String   @id @default(cuid())
+  employee_id String
+  employee    Employee @relation(fields: [employee_id], references: [id])
   device_id   String
-  device      Devices   @relation(fields: [device_id], references: [id])
-  reportBy_id String
-  reportBy    Employees @relation("reportBy", fields: [reportBy_id], references: [id])
-  description String
-  reportDate  DateTime
+  device      Device   @relation(fields: [device_id], references: [id])
+  borrow_date DateTime
+  return_date DateTime
   status      String
-  assignTo_id String
-  assignTo    Employees @relation("assignTo", fields: [assignTo_id], references: [id])
-  repairDate  DateTime
-  cost        Float
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+}
+
+model MaintenanceRequest {
+  id                String              @id @default(cuid())
+  device_id         String
+  device            Device              @relation(fields: [device_id], references: [id])
+  employee_id       String
+  employee          Employee            @relation(fields: [employee_id], references: [id])
+  issue             String
+  created_at        DateTime            @default(now())
+  updated_at        DateTime            @updatedAt
+  MaintenanceReport MaintenanceReport[]
+}
+
+model MaintenanceReport {
+  id                     String             @id @default(cuid())
+  maintenance_request_id String
+  maintenance_request    MaintenanceRequest @relation(fields: [maintenance_request_id], references: [id])
+  technician_id          String
+  technician             Employee           @relation(fields: [technician_id], references: [id])
+  description            String
+  cost                   Float
+  created_at             DateTime           @default(now())
+  updated_at             DateTime           @updatedAt
 }
