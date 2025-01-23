@@ -4,25 +4,16 @@ import { EmployeeColumns } from "./colums";
 import { Button } from "@/components/ui/button";
 import { filterEmployee } from "@/utils/data/Employee";
 
-const fetchEmployees = async () => {
-  const res = await fetch(`${process.env.API_URL}/api/employee`);
-  return res.json();
-};
-
-const fetchDepartments = async () => {
-  const res = await fetch(`${process.env.API_URL}/api/department`);
-  return res.json();
-};
-
-const fetchRoles = async () => {
-  const res = await fetch(`${process.env.API_URL}/api/role`);
-  return res.json();
+const fetchData = async (url: string) => {
+  const res = await fetch(`${process.env.API_URL}/api/${url}`);
+  const data = await res.json();
+  return data;
 };
 
 export default async function Employees() {
-  const employees = await fetchEmployees();
-  const filterDep = filterEmployee("department", await fetchDepartments());
-  const filterRole = filterEmployee("role", await fetchRoles());
+  const employees = await fetchData("employee");
+  const filterDep = filterEmployee("department", await fetchData("department"));
+  const filterRole = filterEmployee("role", await fetchData("role"));
   const option = {
     search: "username",
     filters: [filterDep, filterRole],

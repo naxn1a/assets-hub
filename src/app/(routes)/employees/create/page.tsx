@@ -13,7 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 const fetchDepartments = async () => {
   const res = await fetch(`${process.env.API_URL}/api/department`);
-  return res.json();
+  return await res.json();
 };
 
 export default function Create() {
