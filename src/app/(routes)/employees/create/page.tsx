@@ -1,29 +1,15 @@
 "use client";
+import Link from "next/link";
 import { useEffect, useState } from "react";
+import { EmployeeData, formSchema } from "@/utils/data/Employee";
+import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { formatDate } from "@/utils/format/Date";
 import FormContainer from "@/components/form/FormContainer";
 import Alert from "@/components/Alert/Alert";
-import { formatDate } from "@/utils/format/Date";
-
-const formSchema = z.object({
-  username: z.string().min(2).max(50),
-  email: z.string().email(),
-  firstname: z.string().min(2).max(50),
-  lastname: z.string().min(2).max(50),
-  phone: z.string().regex(/^[0-9]{10}$/, {
-    message: "Invalid phone number",
-  }),
-  department: z.string().nonempty({ message: "Department is required" }),
-  role: z.string().nonempty({ message: "Role is required" }),
-  hiredate: z.string().refine((val) => !isNaN(new Date(val).getTime()), {
-    message: "Invalid date",
-  }),
-});
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const fetchDepartments = async () => {
   const res = await fetch(`${process.env.API_URL}/api/department`);
@@ -63,10 +49,6 @@ export default function Create() {
     console.log(formData);
   }
 
-  const handleConfirm = () => {
-    form.handleSubmit(onSubmit)();
-  };
-
   useEffect(() => {
     fetchDepartments().then((data) => setDepartments(data));
     setRoles(
@@ -83,73 +65,55 @@ export default function Create() {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="grid grid-cols-2 gap-4 mb-4">
-              <FormContainer
-                form={form}
-                name="username"
-                placeholder="Username"
-                type="text"
-              />
-              <FormContainer
-                form={form}
-                name="email"
-                placeholder="Email"
-                type="text"
-              />
-              <FormContainer
-                form={form}
-                name="firstname"
-                placeholder="First Name"
-                type="text"
-              />
-              <FormContainer
-                form={form}
-                name="lastname"
-                placeholder="Last Name"
-                type="text"
-              />
-              <FormContainer
-                form={form}
-                name="phone"
-                placeholder="Phone"
-                type="text"
-              />
+              {EmployeeData.map((data) => {
+                if (data.name === "department") {
+                  return (
+                    <FormContainer
+                      key={data.name}
+                      form={form}
+                      name={data.name}
+                      placeholder={data.placeholder}
+                      type={data.type}
+                      options={departments.map((dep: any) => ({
+                        value: dep.id,
+                        label: dep.name,
+                      }))}
+                      setSelected={setSelected}
+                    />
+                  );
+                }
+                if (data.name === "role") {
+                  return (
+                    <FormContainer
+                      key={data.name}
+                      form={form}
+                      name={data.name}
+                      placeholder={data.placeholder}
+                      type={data.type}
+                      options={roles.map((role: any) => ({
+                        value: role.id,
+                        label: role.name,
+                      }))}
+                    />
+                  );
+                }
+                return (
+                  <FormContainer
+                    key={data.name}
+                    form={form}
+                    name={data.name}
+                    placeholder={data.placeholder}
+                    type={data.type}
+                  />
+                );
+              })}
             </div>
-            <div className="grid gap-4">
-              <FormContainer
-                form={form}
-                name="department"
-                placeholder="Department"
-                type="select"
-                options={departments.map((dep: any) => ({
-                  value: dep.id,
-                  label: dep.name,
-                }))}
-                setSelected={setSelected}
-              />
-              <FormContainer
-                form={form}
-                name="role"
-                placeholder="Role"
-                type="select"
-                options={roles?.map((role: any) => ({
-                  value: role.id,
-                  label: role.name,
-                }))}
-              />
-              <FormContainer
-                form={form}
-                name="hiredate"
-                placeholder="Hire Date"
-                type="date"
-              />
-            </div>
-
             <div className="flex justify-end my-4">
               <Alert
                 label="Create Employee"
                 title="Are you sure?"
                 description="Create employee"
-                action={handleConfirm}
+                action={() => form.handleSubmit(onSubmit)()}
               />
             </div>
           </form>
