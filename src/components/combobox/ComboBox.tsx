@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -33,9 +33,11 @@ export default function ComboBox({
   props,
 }: ComboBoxType) {
   const [open, setOpen] = useState(false);
-  if (!options?.find((framework) => framework.value == value)) {
-    onChange!("");
-  }
+  useEffect(() => {
+    if (!options?.find((framework) => framework.value == value)) {
+      onChange!("");
+    }
+  }, [value]);
 
   return (
     <div>
