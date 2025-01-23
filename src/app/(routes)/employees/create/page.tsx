@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,7 +9,6 @@ import { z } from "zod";
 import FormContainer from "@/components/form/FormContainer";
 import Alert from "@/components/Alert/Alert";
 import { formatDate } from "@/utils/format/Date";
-import { redirect } from "next/navigation";
 
 const formSchema = z.object({
   username: z.string().min(2).max(50),
@@ -25,7 +25,22 @@ const formSchema = z.object({
   }),
 });
 
+const fetchDepartments = async () => {
+  const res = await fetch(`${process.env.API_URL}/api/department`);
+  return res.json();
+};
+
 export default function Create() {
+  const [departments, setDepartments] = useState<
+    {
+      id: number;
+      name: string;
+      role: { id: number; name: string }[];
+    }[]
+  >([]);
+  const [roles, setRoles] = useState<{ id: number; name: string }[]>([]);
+  const [selected, setSelected] = useState("");
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -45,12 +60,19 @@ export default function Create() {
       ...values,
       hiredate: formatDate(new Date(values.hiredate)),
     };
-    redirect("/employees");
+    console.log(formData);
   }
 
   const handleConfirm = () => {
     form.handleSubmit(onSubmit)();
   };
+
+  useEffect(() => {
+    fetchDepartments().then((data) => setDepartments(data));
+    setRoles(
+      departments.find((dep) => dep.id === Number(selected))?.role || []
+    );
+  }, [selected]);
 
   return (
     <section>
@@ -98,24 +120,21 @@ export default function Create() {
                 name="department"
                 placeholder="Department"
                 type="select"
-                options={[
-                  {
-                    value: "engineering",
-                    label: "Engineering",
-                  },
-                  { value: "hr", label: "HR" },
-                  { value: "finance", label: "Finance" },
-                ]}
+                options={departments.map((dep: any) => ({
+                  value: dep.id,
+                  label: dep.name,
+                }))}
+                setSelected={setSelected}
               />
               <FormContainer
                 form={form}
                 name="role"
                 placeholder="Role"
                 type="select"
-                options={[
-                  { value: "admin", label: "Admin" },
-                  { value: "user", label: "User" },
-                ]}
+                options={roles?.map((role: any) => ({
+                  value: role.id,
+                  label: role.name,
+                }))}
               />
               <FormContainer
                 form={form}

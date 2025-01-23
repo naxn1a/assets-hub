@@ -14,6 +14,7 @@ interface FormContainerProps {
   name: string;
   placeholder: string;
   type: string;
+  setSelected?: any;
   options?: any;
 }
 
@@ -22,6 +23,7 @@ export default function FormContainer({
   name,
   placeholder,
   type,
+  setSelected,
   options,
 }: FormContainerProps) {
   return (
@@ -38,7 +40,10 @@ export default function FormContainer({
               <ComboBox
                 label={name}
                 value={field.value}
-                onChange={(text: string) => field.onChange(text)}
+                onChange={(text: string) => {
+                  field.onChange(text);
+                  setSelected && setSelected(text);
+                }}
                 options={options}
               />
             ) : type === "date" ? (

@@ -46,7 +46,7 @@ export default function ComboBox({
             className="w-[200px] justify-between"
           >
             {value
-              ? options!.find((framework) => framework.value === value)?.label
+              ? options!.find((framework) => framework.value == value)?.label
               : `Select ${label}`}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
@@ -61,8 +61,8 @@ export default function ComboBox({
                   <CommandItem
                     key={index}
                     value={framework.value}
-                    onSelect={(currentValue) => {
-                      onChange!(currentValue);
+                    onSelect={() => {
+                      onChange!(framework.value.toString());
                       setOpen(false);
                     }}
                   >
