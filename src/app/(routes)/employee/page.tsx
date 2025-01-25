@@ -3,6 +3,7 @@ import Table from "@/components/table/Table";
 import { EmployeeColumns } from "./colums";
 import { Button } from "@/components/ui/button";
 import { filterEmployee } from "@/utils/data/Employee";
+import { formatDate } from "@/utils/format/Date";
 
 const fetchData = async (url: string) => {
   const res = await fetch(`${process.env.API_URL}/api/${url}`);
@@ -10,8 +11,25 @@ const fetchData = async (url: string) => {
   return data;
 };
 
+const prepareEmployee = async () => {
+  const data = await fetchData("employee");
+  return data.map((item: any) => {
+    return {
+      id: item.id,
+      username: item.username,
+      email: item.email,
+      firstname: item.first_name,
+      lastname: item.last_name,
+      phone: item.phone,
+      department: item.department.name,
+      role: item.role.name,
+      hiredate: formatDate(item.hire_date),
+    };
+  });
+};
+
 export default async function Employees() {
-  const employees = await fetchData("employee");
+  const employees = await prepareEmployee();
   const filterDep = filterEmployee("department", await fetchData("department"));
   const filterRole = filterEmployee("role", await fetchData("role"));
   const option = {
@@ -28,7 +46,7 @@ export default async function Employees() {
         option={option}
       >
         <div className="flex justify-end">
-          <Link href="/employees/create">
+          <Link href="/employee/create">
             <Button>Create</Button>
           </Link>
         </div>

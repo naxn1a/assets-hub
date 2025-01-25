@@ -7,23 +7,23 @@ export default [
     icon: Home,
   },
   {
-    title: "Employees",
-    url: "/employees",
+    title: "Employee",
+    url: "/employee",
     icon: User,
   },
   {
-    title: "Assets",
-    url: "/assets",
+    title: "Asset",
+    url: "/asset",
     icon: Package,
   },
   {
-    title: "Documents",
-    url: "/documents",
+    title: "Document",
+    url: "/document",
     icon: Clipboard,
   },
   {
-    title: "Settings",
-    url: "/settings",
+    title: "Setting",
+    url: "/setting",
     icon: Settings,
   },
 ];

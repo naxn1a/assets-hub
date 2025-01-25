@@ -91,7 +91,7 @@ export const EmployeeColumns: ColumnDef<any>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem asChild>
-              <Link href={`/employees/${data.username}`}>Edit</Link>
+              <Link href={`/employee/${data.id}`}>Edit</Link>
             </DropdownMenuItem>
             <DropdownMenuItem>Delete</DropdownMenuItem>
           </DropdownMenuContent>
