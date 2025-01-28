@@ -38,7 +38,7 @@ export default async function Employees() {
   };
   return (
     <div>
-      <h1 className="text-3xl font-semibold">Employees</h1>
+      <h1 className="text-3xl font-semibold">Employee</h1>
       <Table
         columns={EmployeeColumns}
         data={employees}

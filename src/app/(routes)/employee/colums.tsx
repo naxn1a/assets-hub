@@ -78,6 +78,12 @@ export const EmployeeColumns: ColumnDef<any>[] = [
     ),
   },
   {
+    accessorKey: "status",
+    header: ({ column }) => (
+      <TableColumnHeader column={column} title="Hide date" />
+    ),
+  },
+  {
     id: "actions",
     cell: ({ row }) => {
       const data = row.original;

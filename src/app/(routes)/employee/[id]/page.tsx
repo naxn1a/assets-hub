@@ -28,8 +28,11 @@ export default async function EditEmployee({
   const defaultEmployee = await fetchData((await params).id);
   return (
     <section>
-      <h1 className="text-2xl font-semibold mb-4">Create Employee</h1>
-      <FormEmployee defaultEmployee={defaultEmployee}>
+      <h1 className="text-2xl font-semibold mb-4">Edit Employee</h1>
+      <FormEmployee
+        defaultEmployee={defaultEmployee}
+        buttonName="Update Employee"
+      >
         <Link href="/employee">
           <Button variant={"secondary"}>Back</Button>
         </Link>

@@ -1,6 +1,7 @@
 import { hashPassword } from "@/utils/auth/Hash";
 import prisma from ".";
 import { generateUUIDv4 } from "@/utils/uuid/GenerateUUID";
+import { getFullYear } from "@/utils/format/Date";
 
 const MasterData = [
   {
@@ -42,48 +43,48 @@ const MockDevices = [
     lot_number: "LOT2025010001",
     serial_number: generateUUIDv4(),
     name: `Macbook Pro2025`,
-    purchase_date: new Date(),
-    warranty_expiry: new Date(),
+    purchase_date: getFullYear(),
+    warranty_expiry: getFullYear(),
     status: "Available",
   },
   {
     lot_number: "LOT2025010001",
     serial_number: generateUUIDv4(),
     name: `Macbook Pro2025`,
-    purchase_date: new Date(),
-    warranty_expiry: new Date(),
+    purchase_date: getFullYear(),
+    warranty_expiry: getFullYear(),
     status: "Available",
   },
   {
     lot_number: "LOT2025010001",
     serial_number: generateUUIDv4(),
     name: `Macbook Pro2025`,
-    purchase_date: new Date(),
-    warranty_expiry: new Date(),
+    purchase_date: getFullYear(),
+    warranty_expiry: getFullYear(),
     status: "Available",
   },
   {
     lot_number: "LOT2025010001",
     serial_number: generateUUIDv4(),
     name: `Macbook Pro2025`,
-    purchase_date: new Date(),
-    warranty_expiry: new Date(),
+    purchase_date: getFullYear(),
+    warranty_expiry: getFullYear(),
     status: "Available",
   },
   {
     lot_number: "LOT2025010001",
     serial_number: generateUUIDv4(),
     name: `Notebook 2019`,
-    purchase_date: new Date(),
-    warranty_expiry: new Date(),
+    purchase_date: getFullYear(),
+    warranty_expiry: getFullYear(),
     status: "Available",
   },
   {
     lot_number: "LOT2025010001",
     serial_number: generateUUIDv4(),
     name: `Notebook 2019`,
-    purchase_date: new Date(),
-    warranty_expiry: new Date(),
+    purchase_date: getFullYear(),
+    warranty_expiry: getFullYear(),
     status: "Available",
   },
 ];
@@ -95,7 +96,8 @@ const MasterAdmin = {
   first_name: "admin",
   last_name: "admin",
   phone: "0000000000",
-  hire_date: new Date(),
+  hire_date: getFullYear(),
+  status: "Active",
   department_id: 1,
   role_id: 1,
 };

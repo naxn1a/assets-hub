@@ -45,8 +45,8 @@ model Employee {
   first_name         String
   last_name          String
   phone              String
-  hire_date          DateTime
-  exit_date          DateTime?
+  hire_date          String
+  status             String
   department_id      Int
   department         Department           @relation(fields: [department_id], references: [id])
   role_id            Int
@@ -63,8 +63,8 @@ model Device {
   lot_number         String
   serial_number      String               @unique
   name               String
-  purchase_date      DateTime
-  warranty_expiry    DateTime?
+  purchase_date      String
+  warranty_expiry    String?
   status             String
   created_at         DateTime             @default(now())
   updated_at         DateTime             @updatedAt
@@ -78,8 +78,8 @@ model Borrowing {
   employee    Employee @relation(fields: [employee_id], references: [id])
   device_id   String
   device      Device   @relation(fields: [device_id], references: [id])
-  borrow_date DateTime
-  return_date DateTime
+  borrow_date String
+  return_date String?
   status      String
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt

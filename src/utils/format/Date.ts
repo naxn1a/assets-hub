@@ -10,3 +10,7 @@ export function parseDate(dateString: any) {
   const [year, month, day] = dateString.split("-");
   return new Date(year, month - 1, day);
 }
+
+export function getFullYear() {
+  return new Date().getFullYear().toString();
+}

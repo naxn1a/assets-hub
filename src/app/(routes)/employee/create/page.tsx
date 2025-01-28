@@ -6,7 +6,7 @@ export default function CreateEmployee() {
   return (
     <section>
       <h1 className="text-2xl font-semibold mb-4">Create Employee</h1>
-      <FormEmployee>
+      <FormEmployee buttonName="Create Employee">
         <Link href="/employee">
           <Button variant={"secondary"}>Back</Button>
         </Link>

@@ -32,7 +32,7 @@ export default function DatePicker({ value, onChange, ...props }: any) {
         <Calendar
           mode="single"
           selected={date}
-          onSelect={(date) => date && onChange(date.toISOString())}
+          onSelect={(date) => date && onChange(date.getFullYear())}
           initialFocus
           {...props}
         />

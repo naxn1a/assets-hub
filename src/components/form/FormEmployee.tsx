@@ -23,9 +23,11 @@ const prepareOptions = (data: any) => {
 
 export default function FormEmployee({
   children,
+  buttonName,
   defaultEmployee,
 }: {
   children?: React.ReactNode;
+  buttonName?: string;
   defaultEmployee?: EmployeeType;
 }) {
   const [departments, setDepartments] = useState<any[]>([]);
@@ -48,6 +50,7 @@ export default function FormEmployee({
       department: defaultEmployee?.department.toString() || "",
       role: defaultEmployee?.role.toString() || "",
       hiredate: defaultEmployee?.hiredate || "",
+      status: defaultEmployee?.status || "",
     },
   });
 
@@ -111,7 +114,7 @@ export default function FormEmployee({
         </div>
         <div className="my-8 flex gap-4">
           {children}
-          <Button type="submit">Create Employee</Button>
+          <Button type="submit">{buttonName}</Button>
           {/* <Alert
             label="Create Employee"
             title="Are you sure?"

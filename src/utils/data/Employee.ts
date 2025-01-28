@@ -11,6 +11,7 @@ export type EmployeeType = {
   phone: string;
   role: string;
   hiredate: string;
+  status: string;
 };
 
 export const filterEmployee = (name: string, data: any[]) => {
@@ -33,6 +34,7 @@ export const formSchema = z.object({
   hiredate: z.string().refine((val) => !isNaN(new Date(val).getTime()), {
     message: "Invalid date",
   }),
+  status: z.string().nonempty({ message: "Status is required" }),
 });
 
 export const EmployeeData = [
@@ -62,15 +64,21 @@ export const EmployeeData = [
     type: "text",
   },
   {
-    name: "hiredate",
-    placeholder: "Hire Date",
-    type: "date",
-  },
-  {
     name: "department",
     placeholder: "Department",
     type: "select",
     options: [],
+  },
+  {
+    name: "role",
+    placeholder: "Role",
+    type: "select",
+    options: [],
+  },
+  {
+    name: "hiredate",
+    placeholder: "Hire Date",
+    type: "date",
   },
   {
     name: "role",
