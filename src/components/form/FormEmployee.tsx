@@ -4,16 +4,19 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import FormContainer from "@/components/form/FormContainer";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { EmployeeData, EmployeeType, formSchema } from "@/utils/data/Employee";
+import {
+  EmployeeData,
+  EmployeeStatus,
+  EmployeeType,
+  formSchema,
+} from "@/utils/data/Employee";
 import { Form, FormField } from "@/components/ui/form";
 import { formatDate } from "@/utils/format/Date";
 import Alert from "@/components/alert/Alert";
 import { Button } from "../ui/button";
+import { fetchData } from "@/utils/fetchData";
 
-const prepareFetchDepartments = async () => {
-  const res = await fetch(`${process.env.API_URL}/api/department`);
-  return await res.json();
-};
+const prepareFetchDepartments = async () => await fetchData("department");
 
 const prepareOptions = (data: any) => {
   return data.map((item: any) => {
@@ -97,6 +100,8 @@ export default function FormEmployee({
                               ? departments
                               : data.name === "role"
                               ? roles
+                              : data.name === "status"
+                              ? EmployeeStatus
                               : []
                           )
                         : []

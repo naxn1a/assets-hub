@@ -1,4 +1,4 @@
-export function formatDate(date: any) {
+export function formatDate(date?: any) {
   date = new Date(date);
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -9,8 +9,4 @@ export function formatDate(date: any) {
 export function parseDate(dateString: any) {
   const [year, month, day] = dateString.split("-");
   return new Date(year, month - 1, day);
-}
-
-export function getFullYear() {
-  return new Date().getFullYear().toString();
 }

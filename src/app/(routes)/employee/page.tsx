@@ -1,15 +1,9 @@
 import Link from "next/link";
 import Table from "@/components/table/Table";
+import { fetchData } from "@/utils/fetchData";
 import { EmployeeColumns } from "./colums";
 import { Button } from "@/components/ui/button";
 import { filterEmployee } from "@/utils/data/Employee";
-import { formatDate } from "@/utils/format/Date";
-
-const fetchData = async (url: string) => {
-  const res = await fetch(`${process.env.API_URL}/api/${url}`);
-  const data = await res.json();
-  return data;
-};
 
 const prepareEmployee = async () => {
   const data = await fetchData("employee");
@@ -23,7 +17,8 @@ const prepareEmployee = async () => {
       phone: item.phone,
       department: item.department.name,
       role: item.role.name,
-      hiredate: formatDate(item.hire_date),
+      hiredate: item.hire_date,
+      status: item.status,
     };
   });
 };

@@ -1,7 +1,7 @@
-export default function Request() {
+export default function RequestAsset() {
   return (
     <div>
-      <h1 className="text-3xl font-semibold">Request</h1>
+      <h1 className="text-3xl font-semibold">RequestAsset</h1>
     </div>
   );
 }

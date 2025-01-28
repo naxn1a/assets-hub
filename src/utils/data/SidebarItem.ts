@@ -19,8 +19,8 @@ export default [
     icon: User,
   },
   {
-    title: "Request",
-    url: "/request",
+    title: "Request Asset",
+    url: "/request-asset",
     icon: FileText,
   },
   {

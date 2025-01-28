@@ -64,6 +64,11 @@ export const EmployeeData = [
     type: "text",
   },
   {
+    name: "hiredate",
+    placeholder: "Hire Date",
+    type: "date",
+  },
+  {
     name: "department",
     placeholder: "Department",
     type: "select",
@@ -76,14 +81,24 @@ export const EmployeeData = [
     options: [],
   },
   {
-    name: "hiredate",
-    placeholder: "Hire Date",
-    type: "date",
-  },
-  {
-    name: "role",
-    placeholder: "Role",
+    name: "status",
+    placeholder: "Status",
     type: "select",
     options: [],
+  },
+];
+
+export const EmployeeStatus = [
+  {
+    id: "Active",
+    name: "Active",
+  },
+  {
+    id: "Inactive",
+    name: "Inactive",
+  },
+  {
+    id: "Retired",
+    name: "Retired",
   },
 ];

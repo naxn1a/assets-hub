@@ -61,7 +61,7 @@ export default function ComboBox({
                     key={index}
                     value={framework.value}
                     onSelect={() => {
-                      onChange!(framework.value.toString());
+                      onChange!(framework.value);
                       setOpen(false);
                     }}
                   >

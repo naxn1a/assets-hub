@@ -80,7 +80,7 @@ export const EmployeeColumns: ColumnDef<any>[] = [
   {
     accessorKey: "status",
     header: ({ column }) => (
-      <TableColumnHeader column={column} title="Hide date" />
+      <TableColumnHeader column={column} title="Status" />
     ),
   },
   {
