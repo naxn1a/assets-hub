@@ -5,12 +5,12 @@ import { Button } from "@/components/ui/button";
 export default function CreateEmployee() {
   return (
     <section>
-      <div className="flex my-4">
+      <h1 className="text-2xl font-semibold mb-4">Create Employee</h1>
+      <FormEmployee>
         <Link href="/employee">
-          <Button>Back</Button>
+          <Button variant={"secondary"}>Back</Button>
         </Link>
-      </div>
-      <FormEmployee />
+      </FormEmployee>
     </section>
   );
 }

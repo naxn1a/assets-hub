@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -33,11 +33,6 @@ export default function ComboBox({
   props,
 }: ComboBoxType) {
   const [open, setOpen] = useState(false);
-  useEffect(() => {
-    if (!options?.find((framework) => framework.value == value)) {
-      onChange!("");
-    }
-  }, [value]);
 
   return (
     <div>
@@ -47,7 +42,7 @@ export default function ComboBox({
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            className="w-[200px] justify-between"
+            className="w-2/3 justify-between"
           >
             {value
               ? options!.find((framework) => framework.value == value)?.label
@@ -55,9 +50,9 @@ export default function ComboBox({
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[200px] p-0">
+        <PopoverContent className="w-2/3 p-0">
           <Command>
-            <CommandInput placeholder="Search framework..." />
+            <CommandInput placeholder="Search..." />
             <CommandList>
               <CommandEmpty>Not found.</CommandEmpty>
               <CommandGroup>

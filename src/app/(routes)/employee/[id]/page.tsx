@@ -1,10 +1,12 @@
 import FormEmployee from "@/components/form/FormEmployee";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
-const fetchData = async (params: string) => {
-  const res = await fetch(`${process.env.API_URL}/api/employee/${params}`);
+const fetchData = async (id: string) => {
+  const res = await fetch(`${process.env.API_URL}/api/employee/${id}`);
   const data = await res.json();
+  if (!data) redirect("/employee");
   return {
     id: data.id,
     username: data.username,
@@ -26,12 +28,12 @@ export default async function EditEmployee({
   const defaultEmployee = await fetchData((await params).id);
   return (
     <section>
-      <div className="flex my-4">
+      <h1 className="text-2xl font-semibold mb-4">Create Employee</h1>
+      <FormEmployee defaultEmployee={defaultEmployee}>
         <Link href="/employee">
-          <Button>Back</Button>
+          <Button variant={"secondary"}>Back</Button>
         </Link>
-      </div>
-      <FormEmployee defaultEmployee={defaultEmployee} />
+      </FormEmployee>
     </section>
   );
 }
