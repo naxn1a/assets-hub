@@ -1,8 +1,7 @@
-import { NextResponse } from "next/server";
 import prisma from "@/database";
 
 export async function GET() {
-  return NextResponse.json(
+  return Response.json(
     await prisma.department.findMany({
       include: {
         role: true,
