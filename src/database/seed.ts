@@ -1,74 +1,125 @@
 import { hashPassword } from "@/utils/auth/Hash";
 import prisma from ".";
+import { generateUUIDv4 } from "@/utils/uuid/GenerateUUID";
 
 const MasterData = [
   {
-    id: 1,
     name: "Admin",
     role: [
       {
-        id: 1,
         name: "Admin",
       },
     ],
   },
   {
-    id: 2,
     name: "Human resource (HR)",
     role: [
-      { id: 2, name: "Recruiter" },
-      { id: 3, name: "HR Manager" },
-      { id: 4, name: "Training Coordinator" },
+      { name: "Recruiter" },
+      { name: "HR Manager" },
+      { name: "Training Coordinator" },
     ],
   },
   {
-    id: 3,
     name: "Account",
     role: [
-      { id: 5, name: "Accountant" },
-      { id: 6, name: "Financial Analyst" },
-      { id: 7, name: "Auditor" },
+      { name: "Accountant" },
+      { name: "Financial Analyst" },
+      { name: "Auditor" },
     ],
   },
   {
-    id: 4,
     name: "Information Technology (IT)",
     role: [
-      { id: 8, name: "Software Developer" },
-      { id: 9, name: "System Administrator" },
-      { id: 10, name: "IT Support" },
+      { name: "Software Developer" },
+      { name: "System Administrator" },
+      { name: "IT Support" },
     ],
   },
 ];
 
-async function main() {
-  await prisma.$transaction((tx) => {
-    return Promise.all(
-      MasterData.map(async (department) => {
-        await tx.department.create({
-          data: {
-            name: department.name,
-            role: {
-              create: department.role,
-            },
-          },
-        });
-      })
-    );
-  });
+const MockDevices = [
+  {
+    lot_number: "LOT2025010001",
+    serial_number: generateUUIDv4(),
+    name: `Macbook Pro2025`,
+    purchase_date: new Date(),
+    warranty_expiry: new Date(),
+    status: "Available",
+  },
+  {
+    lot_number: "LOT2025010001",
+    serial_number: generateUUIDv4(),
+    name: `Macbook Pro2025`,
+    purchase_date: new Date(),
+    warranty_expiry: new Date(),
+    status: "Available",
+  },
+  {
+    lot_number: "LOT2025010001",
+    serial_number: generateUUIDv4(),
+    name: `Macbook Pro2025`,
+    purchase_date: new Date(),
+    warranty_expiry: new Date(),
+    status: "Available",
+  },
+  {
+    lot_number: "LOT2025010001",
+    serial_number: generateUUIDv4(),
+    name: `Macbook Pro2025`,
+    purchase_date: new Date(),
+    warranty_expiry: new Date(),
+    status: "Available",
+  },
+  {
+    lot_number: "LOT2025010001",
+    serial_number: generateUUIDv4(),
+    name: `Notebook 2019`,
+    purchase_date: new Date(),
+    warranty_expiry: new Date(),
+    status: "Available",
+  },
+  {
+    lot_number: "LOT2025010001",
+    serial_number: generateUUIDv4(),
+    name: `Notebook 2019`,
+    purchase_date: new Date(),
+    warranty_expiry: new Date(),
+    status: "Available",
+  },
+];
 
-  await prisma.employee.create({
-    data: {
-      username: "admin",
-      email: "admin@assets.hub",
-      password: await hashPassword("admin"),
-      first_name: "admin",
-      last_name: "admin",
-      phone: "0000000000",
-      hire_date: new Date(),
-      department_id: 2,
-      role_id: 2,
-    },
+const MasterAdmin = {
+  username: "admin",
+  email: "admin@assets.hub",
+  password: await hashPassword("admin"),
+  first_name: "admin",
+  last_name: "admin",
+  phone: "0000000000",
+  hire_date: new Date(),
+  department_id: 1,
+  role_id: 1,
+};
+
+async function main() {
+  await prisma.$transaction(async (tx) => {
+    MasterData.forEach(async (dept) => {
+      await tx.department.create({
+        data: {
+          name: dept.name,
+          role: {
+            create: dept.role,
+          },
+        },
+      });
+    });
+
+    await tx.device.createMany({
+      data: [...MockDevices],
+    });
+
+    await tx.employee.create({
+      data: MasterAdmin,
+    });
   });
 }
 
