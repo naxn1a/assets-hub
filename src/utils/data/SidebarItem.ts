@@ -1,11 +1,4 @@
-import {
-  Home,
-  User,
-  Package,
-  Clipboard,
-  Settings,
-  FileText,
-} from "lucide-react";
+import { Home, User, Package, Clipboard, Settings } from "lucide-react";
 
 export default [
   {
@@ -13,26 +6,25 @@ export default [
     url: "/",
     icon: Home,
   },
+  // Hr
   {
     title: "Employee",
     url: "/employee",
     icon: User,
   },
-  {
-    title: "Request Asset",
-    url: "/request-asset",
-    icon: FileText,
-  },
+  // It
   {
     title: "Asset",
     url: "/asset",
     icon: Package,
   },
+  // Account
   {
     title: "Document",
     url: "/document",
     icon: Clipboard,
   },
+  // Setting
   {
     title: "Setting",
     url: "/setting",
