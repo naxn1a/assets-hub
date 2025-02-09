@@ -58,6 +58,15 @@ export default function <TData, TValue>({
     },
   });
 
+  const [selectedValues, setSelectedValues] = useState<{
+    [key: string]: string;
+  }>({});
+
+  const handleClear = () => {
+    setSelectedValues({});
+    table.resetColumnFilters();
+  };
+
   return (
     <section>
       {children}
@@ -68,8 +77,14 @@ export default function <TData, TValue>({
               <TableSearch key={index} table={table} search={name} />
             ))}
           {option?.filters && (
-            <TableFilter table={table} option={option.filters} />
+            <TableFilter
+              table={table}
+              option={option.filters}
+              selectedValues={selectedValues}
+              setSelectedValues={setSelectedValues}
+            />
           )}
+          <button onClick={handleClear}>Clear</button>
           <TableViewOptions table={table} />
         </div>
       </TableData>

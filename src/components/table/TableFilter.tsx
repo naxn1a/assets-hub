@@ -6,7 +6,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { useState } from "react";
 
 interface TableSearchProps<TData> {
   table: Table<TData>;
@@ -14,17 +13,20 @@ interface TableSearchProps<TData> {
     name: string;
     data: string[];
   }[];
+  selectedValues: {
+    [key: string]: string;
+  };
+  setSelectedValues: React.Dispatch<
+    React.SetStateAction<{ [key: string]: string }>
+  >;
 }
 
-export default function <TData>({ table, option }: TableSearchProps<TData>) {
-  const [selectedValues, setSelectedValues] = useState<{
-    [key: string]: string;
-  }>({});
-
-  const handleClear = () => {
-    setSelectedValues({});
-    table.resetColumnFilters();
-  };
+export default function <TData>({
+  table,
+  option,
+  selectedValues,
+  setSelectedValues,
+}: TableSearchProps<TData>) {
   return (
     <>
       {option.map((select, index) => (
@@ -48,7 +50,6 @@ export default function <TData>({ table, option }: TableSearchProps<TData>) {
           </SelectContent>
         </Select>
       ))}
-      <button onClick={handleClear}>Clear</button>
     </>
   );
 }

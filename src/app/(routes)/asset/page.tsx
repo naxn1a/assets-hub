@@ -23,7 +23,7 @@ export default async function Asset() {
   const data = await prepareAsset();
 
   const option = {
-    search: ["serial"],
+    search: ["serial", "name"],
   };
 
   return (
