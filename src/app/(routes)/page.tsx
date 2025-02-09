@@ -25,10 +25,10 @@ export default async function Home() {
           <CardOverview title="Assets" Icon={Package} value={asset?.length} />
         </Card>
         <Card>
-          <CardOverview title="Applies" Icon={Power} value={apply?.length} />
+          <CardOverview title="Actives" Icon={Power} value={apply?.length} />
         </Card>
         <Card>
-          <CardOverview title="Repairs" Icon={Wrench} value={repair?.length} />
+          <CardOverview title="Maintenances" Icon={Wrench} value={repair?.length} />
         </Card>
       </div>
       <div className="grid grid-cols-2 gap-8">
