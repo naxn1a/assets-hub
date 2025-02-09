@@ -4,11 +4,11 @@ import Link from "next/link";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import FormContainer from "@/components/form/FormContainer";
+import ContainerForm from "@/components/form/ContainerForm";
 import { Form, FormField } from "@/components/ui/form";
 import { Button } from "../ui/button";
 import { formSchema, Data as DataValue, Status } from "@/utils/data/Employee";
-import { formatDate } from "@/utils/format/Date";
+import { formatDate } from "@/utils/Date";
 import { Fetch } from "@/utils/Fetch";
 
 const prepareOptions = (data: any) => {
@@ -94,7 +94,7 @@ export default function FormEmployee({
               name={data.name}
               render={({ field }) => {
                 return (
-                  <FormContainer
+                  <ContainerForm
                     field={field}
                     name={data.name}
                     placeholder={data.placeholder}

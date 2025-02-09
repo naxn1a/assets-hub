@@ -1,7 +1,7 @@
 import { hashPassword } from "@/utils/auth/Hash";
 import prisma from ".";
-import { generateUUIDv4 } from "@/utils/uuid/GenerateUUID";
-import { formatDate } from "@/utils/format/Date";
+import { generateUUIDv4 } from "@/utils/GenerateUUID";
+import { formatDate } from "@/utils/Date";
 
 const MasterData = [
   {
