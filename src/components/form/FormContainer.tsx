@@ -15,6 +15,7 @@ interface FormContainerProps {
   type: string;
   options?: any;
   onSelected?: (value: string) => void;
+  disabled?: boolean;
 }
 
 export default function FormContainer({
@@ -24,15 +25,22 @@ export default function FormContainer({
   type,
   options,
   onSelected,
+  disabled,
 }: FormContainerProps) {
   return (
     <FormItem>
       <FormLabel>{placeholder}</FormLabel>
       <FormControl>
         {type === "text" ? (
-          <Input {...field} placeholder={placeholder} className="w-2/3" />
+          <Input
+            {...field}
+            placeholder={placeholder}
+            className="w-2/3"
+            disabled={disabled}
+          />
         ) : type === "select" ? (
           <ComboBox
+            props={{ disabled }}
             label={name}
             value={field.value}
             onChange={(text: string) => {
@@ -46,8 +54,9 @@ export default function FormContainer({
         ) : type === "date" ? (
           <div>
             <DatePicker
+              props={{ disabled }}
               value={field.value}
-              onChange={(date: Date) => field.onChange(date)}
+              change={(date: Date) => field.onChange(date)}
             />
           </div>
         ) : null}

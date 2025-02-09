@@ -31,13 +31,11 @@ export const formSchema = z.object({
   }),
   department: z.string().nonempty({ message: "Department is required" }),
   role: z.string().nonempty({ message: "Role is required" }),
-  hiredate: z.string().refine((val) => !isNaN(new Date(val).getTime()), {
-    message: "Invalid date",
-  }),
+  hiredate: z.string().nonempty({ message: "Hire date is required" }),
   status: z.string().nonempty({ message: "Status is required" }),
 });
 
-export const EmployeeData = [
+export const Data = [
   {
     name: "username",
     placeholder: "Username",
@@ -88,7 +86,7 @@ export const EmployeeData = [
   },
 ];
 
-export const EmployeeStatus = [
+export const Status = [
   {
     id: "Active",
     name: "Active",

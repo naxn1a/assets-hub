@@ -1,11 +1,9 @@
-import FormEmployee from "@/components/form/FormEmployee";
-import { Button } from "@/components/ui/button";
-import { fetchData } from "@/utils/fetchData";
-import Link from "next/link";
+import Form from "@/components/form/FormEmployee";
+import { Fetch } from "@/utils/Fetch";
 import { redirect } from "next/navigation";
 
-const getData = async (id: string) => {
-  const data = await fetchData("employee", id);
+const prepareFetchData = async (id: string) => {
+  const data = await Fetch("employee", id);
   if (!data) redirect("/employee");
   return {
     id: data.id,
@@ -21,23 +19,16 @@ const getData = async (id: string) => {
   };
 };
 
-export default async function EditEmployee({
+export default async function DetailEmployee({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const defaultEmployee = await getData((await params).id);
+  const coreData = await prepareFetchData((await params).id);
   return (
     <section>
-      <h1 className="text-2xl font-semibold mb-4">Edit Employee</h1>
-      <FormEmployee
-        defaultEmployee={defaultEmployee}
-        buttonName="Update Employee"
-      >
-        <Link href="/employee">
-          <Button variant={"secondary"}>Back</Button>
-        </Link>
-      </FormEmployee>
+      <h1 className="text-2xl font-semibold mb-4">Detail Employee</h1>
+      <Form back="/employee" coreData={coreData} />
     </section>
   );
 }

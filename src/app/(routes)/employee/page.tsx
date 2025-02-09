@@ -1,12 +1,12 @@
 import Link from "next/link";
 import Table from "@/components/table/Table";
-import { fetchData } from "@/utils/fetchData";
-import { EmployeeColumns } from "./colums";
+import { EmployeeColumns as columns } from "./colums";
 import { Button } from "@/components/ui/button";
 import { filterEmployee } from "@/utils/data/Employee";
+import { Fetch } from "@/utils/Fetch";
 
 const prepareEmployee = async () => {
-  const data = await fetchData("employee");
+  const data = await Fetch("employee");
   return data.map((item: any) => {
     return {
       id: item.id,
@@ -24,25 +24,22 @@ const prepareEmployee = async () => {
 };
 
 export default async function Employees() {
-  const employees = await prepareEmployee();
-  const filterDep = filterEmployee("department", await fetchData("department"));
-  const filterRole = filterEmployee("role", await fetchData("role"));
+  const data = await prepareEmployee();
+  const filterDept = filterEmployee("department", await Fetch("department"));
+  const filterRole = filterEmployee("role", await Fetch("role"));
+
   const option = {
-    search: "username",
-    filters: [filterDep, filterRole],
+    search: ["username"],
+    filters: [filterDept, filterRole],
   };
+
   return (
     <div>
       <h1 className="text-3xl font-semibold">Employee</h1>
-      <Table
-        columns={EmployeeColumns}
-        data={employees}
-        search="username"
-        option={option}
-      >
+      <Table columns={columns} data={data} option={option}>
         <div className="flex justify-end">
           <Link href="/employee/create">
-            <Button>Create</Button>
+            <Button>New</Button>
           </Link>
         </div>
       </Table>

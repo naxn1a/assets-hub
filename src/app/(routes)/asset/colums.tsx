@@ -5,7 +5,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import TableColumnHeader from "@/components/table/TableColumnHeader";
 import Link from "next/link";
 
-export const EmployeeColumns: ColumnDef<any>[] = [
+export const AssetColumns: ColumnDef<any>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -29,45 +29,29 @@ export const EmployeeColumns: ColumnDef<any>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "username",
+    accessorKey: "lot",
+    header: ({ column }) => <TableColumnHeader column={column} title="Lot" />,
+  },
+  {
+    accessorKey: "serial",
     header: ({ column }) => (
-      <TableColumnHeader column={column} title="Username" />
+      <TableColumnHeader column={column} title="Serial" />
     ),
   },
   {
-    accessorKey: "email",
-    header: ({ column }) => <TableColumnHeader column={column} title="Email" />,
+    accessorKey: "name",
+    header: ({ column }) => <TableColumnHeader column={column} title="Name" />,
   },
   {
-    accessorKey: "firstname",
+    accessorKey: "purchasedate",
     header: ({ column }) => (
-      <TableColumnHeader column={column} title="Firstname" />
+      <TableColumnHeader column={column} title="Purchase Date" />
     ),
   },
   {
-    accessorKey: "lastname",
+    accessorKey: "warrantyexpiry",
     header: ({ column }) => (
-      <TableColumnHeader column={column} title="Lastname" />
-    ),
-  },
-  {
-    accessorKey: "phone",
-    header: ({ column }) => <TableColumnHeader column={column} title="Phone" />,
-  },
-  {
-    accessorKey: "department",
-    header: ({ column }) => (
-      <TableColumnHeader column={column} title="Department" />
-    ),
-  },
-  {
-    accessorKey: "role",
-    header: ({ column }) => <TableColumnHeader column={column} title="Role" />,
-  },
-  {
-    accessorKey: "hiredate",
-    header: ({ column }) => (
-      <TableColumnHeader column={column} title="Hide date" />
+      <TableColumnHeader column={column} title="Warranty Expiry" />
     ),
   },
   {
@@ -81,7 +65,7 @@ export const EmployeeColumns: ColumnDef<any>[] = [
     cell: ({ row }) => {
       const data = row.original;
       return (
-        <Link href={`/employee/${data.id}`}>
+        <Link href={`/asset/${data.id}`}>
           <LucideEdit className="h-4 w-4" />
         </Link>
       );

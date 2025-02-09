@@ -1,5 +1,4 @@
 "use client";
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,9 +6,8 @@ import { useForm } from "react-hook-form";
 import FormContainer from "@/components/form/FormContainer";
 import { Form, FormField } from "@/components/ui/form";
 import { Button } from "../ui/button";
-import { formSchema, Data as DataValue, Status } from "@/utils/data/Employee";
+import { formSchema, Data as DataValue, Status } from "@/utils/data/Asset";
 import { formatDate } from "@/utils/format/Date";
-import { Fetch } from "@/utils/Fetch";
 
 const prepareOptions = (data: any) => {
   return data.map((item: any) => {
@@ -17,68 +15,41 @@ const prepareOptions = (data: any) => {
   });
 };
 
-export default function FormEmployee({
+export default function FormAsset({
   back,
   coreData,
+  disabled,
 }: {
   back: string;
   coreData?: any;
+  disabled?: string[];
 }) {
-  const [departments, setDepartments] = useState<any[]>([]);
-  const [roles, setRoles] = useState([]);
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: coreData?.username || "",
-      email: coreData?.email || "",
-      firstname: coreData?.firstname || "",
-      lastname: coreData?.lastname || "",
-      phone: coreData?.phone || "",
-      department: coreData?.department.toString() || "",
-      role: coreData?.role.toString() || "",
-      hiredate: coreData?.hiredate || "",
-      status: coreData?.status || "",
+      lot: coreData?.lot || "",
+      serial: coreData?.serial || "",
+      name: coreData?.name || "",
+      purchasedate: coreData?.purchasedate || "",
+      warrantyexpiry: coreData?.warrantyexpiry || "",
+      status: coreData?.status.toUpperCase() || "",
     },
   });
 
-  const prepareFetchDepartments = async () => await Fetch("department");
-
-  const handleDepartmentChange = (value: string) => {
-    const department = departments.find((dept: any) => dept.id == value);
-    department ? setRoles(department.role) : setRoles([]);
-    form.setValue("role", "");
-  };
-
   const options = [
-    {
-      name: "department",
-      state: departments,
-    },
-    {
-      name: "role",
-      state: roles,
-    },
     {
       name: "status",
       state: Status,
     },
   ];
 
-  useEffect(() => {
-    prepareFetchDepartments().then((dept) => {
-      setDepartments(dept);
-      if (coreData) {
-        const department = dept.find((d: any) => d.id == coreData.department);
-        department ? setRoles(department.role) : setRoles([]);
-      }
-    });
-  }, []);
-
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     const formData = {
       ...values,
-      hiredate: formatDate(values.hiredate),
+      purchasedate: formatDate(values.purchasedate),
+      warrantyexpiry: values.warrantyexpiry
+        ? formatDate(values.warrantyexpiry)
+        : null,
     };
     console.log(formData);
   };
@@ -107,11 +78,7 @@ export default function FormEmployee({
                           )
                         : []
                     }
-                    onSelected={
-                      data.name === "department"
-                        ? handleDepartmentChange
-                        : undefined
-                    }
+                    disabled={disabled?.includes(data.name)}
                   />
                 );
               }}

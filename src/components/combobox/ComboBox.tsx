@@ -33,11 +33,10 @@ export default function ComboBox({
   props,
 }: ComboBoxType) {
   const [open, setOpen] = useState(false);
-
   return (
     <div>
-      <Popover open={open} onOpenChange={setOpen} {...props}>
-        <PopoverTrigger asChild>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild disabled={props?.disabled}>
           <Button
             variant="outline"
             role="combobox"
