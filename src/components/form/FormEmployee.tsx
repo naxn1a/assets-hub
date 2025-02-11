@@ -10,6 +10,7 @@ import { Button } from "../ui/button";
 import { formSchema, Data as DataValue, Status } from "@/utils/data/Employee";
 import { formatDate } from "@/utils/Date";
 import { Fetch } from "@/utils/Fetch";
+import { redirect } from "next/navigation";
 
 const prepareOptions = (data: any) => {
   return data.map((item: any) => {
@@ -20,9 +21,11 @@ const prepareOptions = (data: any) => {
 export default function FormEmployee({
   back,
   coreData,
+  disabled,
 }: {
   back: string;
   coreData?: any;
+  disabled?: string[];
 }) {
   const [departments, setDepartments] = useState<any[]>([]);
   const [roles, setRoles] = useState([]);
@@ -75,12 +78,28 @@ export default function FormEmployee({
     });
   }, []);
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const formData = {
       ...values,
       hiredate: formatDate(values.hiredate),
     };
-    console.log(formData);
+
+    const res = await fetch(`/api/employee/${coreData.id ? coreData.id : ""}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    const data = await res.json();
+
+    if (data.status === "ok") {
+      alert(data.message);
+      // redirect("/employee");
+    } else {
+      alert(data.message);
+    }
   };
 
   return (
@@ -112,6 +131,7 @@ export default function FormEmployee({
                         ? handleDepartmentChange
                         : undefined
                     }
+                    disabled={disabled?.includes(data.name)}
                   />
                 );
               }}
