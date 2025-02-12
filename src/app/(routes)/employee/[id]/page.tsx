@@ -1,9 +1,15 @@
 import Form from "@/components/form/FormEmployee";
-import { Fetch } from "@/utils/Fetch";
 import { redirect } from "next/navigation";
 
 const prepareFetchData = async (id: string) => {
-  const data = await Fetch("employee", id);
+  const data = await fetch(`${process.env.API_URL}/api/employee/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((res) => {
+    return res.json();
+  });
+
   if (!data) redirect("/employee");
   return {
     id: data.id,
@@ -17,6 +23,21 @@ const prepareFetchData = async (id: string) => {
     hiredate: data.hire_date,
     status: data.status,
   };
+};
+
+const resetPassword = async (id: string, password: string) => {
+  const data = await fetch(
+    `${process.env.API_URL}/api/employee/reset/password/${id}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        password,
+      }),
+    }
+  ).then((res) => res.json());
 };
 
 export default async function DetailEmployee({

@@ -3,13 +3,25 @@ import CardOverview from "@/components/card/CardOverview";
 import { User, Package, Power, Wrench } from "lucide-react";
 import ChartBar from "@/components/chart/ChartBar";
 import ChartPie from "@/components/chart/ChartPie";
-import { Fetch } from "@/utils/Fetch";
+
+const fetchData = async (path: string) => {
+  const data = await fetch(`${process.env.API_URL}/api/${path}`, {
+    headers: {
+      "Content-Type": "application/json",
+      // Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  }).then((res) => {
+    return res.json();
+  });
+
+  return data;
+};
 
 export default async function Home() {
-  const employee = await Fetch("employee");
-  const asset = await Fetch("device");
-  const apply = await Fetch("borrowing");
-  const repair = await Fetch("maintenance-request");
+  const employee = await fetchData("employee");
+  const asset = await fetchData("device");
+  const apply = await fetchData("borrowing");
+  const repair = await fetchData("maintenance-request");
 
   return (
     <section>
@@ -28,7 +40,11 @@ export default async function Home() {
           <CardOverview title="Actives" Icon={Power} value={apply?.length} />
         </Card>
         <Card>
-          <CardOverview title="Maintenances" Icon={Wrench} value={repair?.length} />
+          <CardOverview
+            title="Maintenances"
+            Icon={Wrench}
+            value={repair?.length}
+          />
         </Card>
       </div>
       <div className="grid grid-cols-2 gap-8">

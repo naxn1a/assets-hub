@@ -9,7 +9,6 @@ import { Form, FormField } from "@/components/ui/form";
 import { Button } from "../ui/button";
 import { formSchema, Data as DataValue, Status } from "@/utils/data/Employee";
 import { formatDate } from "@/utils/Date";
-import { Fetch } from "@/utils/Fetch";
 import { redirect } from "next/navigation";
 
 const prepareOptions = (data: any) => {
@@ -45,7 +44,10 @@ export default function FormEmployee({
     },
   });
 
-  const prepareFetchDepartments = async () => await Fetch("department");
+  const prepareFetchDepartments = async () =>
+    await fetch(`${process.env.API_URL}/api/department`).then((res) =>
+      res.json()
+    );
 
   const handleDepartmentChange = (value: string) => {
     const department = departments.find((dept: any) => dept.id == value);
@@ -84,13 +86,16 @@ export default function FormEmployee({
       hiredate: formatDate(values.hiredate),
     };
 
-    const res = await fetch(`/api/employee/${coreData.id ? coreData.id : ""}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
+    const res = await fetch(
+      `${process.env.API_URL}/api/employee/${coreData.id ? coreData.id : ""}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      }
+    );
 
     const data = await res.json();
 

@@ -2,10 +2,21 @@ import Table from "@/components/table/Table";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { AssetColumns as columns } from "./colums";
-import { Fetch } from "@/utils/Fetch";
+
+const fetchData = async (path: string) => {
+  const data = await fetch(`${process.env.API_URL}/api/${path}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((res) => {
+    return res.json();
+  });
+
+  return data;
+};
 
 const prepareAsset = async () => {
-  const data = await Fetch("device");
+  const data = await fetchData("device");
   return data.map((item: any) => {
     return {
       id: item.id,

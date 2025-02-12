@@ -20,8 +20,8 @@ export default [
   },
   // Account
   {
-    title: "Document",
-    url: "/document",
+    title: "History",
+    url: "/history",
     icon: Clipboard,
   },
   // Setting

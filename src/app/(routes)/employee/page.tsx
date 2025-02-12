@@ -3,10 +3,21 @@ import Table from "@/components/table/Table";
 import { EmployeeColumns as columns } from "./colums";
 import { Button } from "@/components/ui/button";
 import { filterEmployee } from "@/utils/data/Employee";
-import { Fetch } from "@/utils/Fetch";
+
+const fetchData = async (path: string) => {
+  const data = await fetch(`${process.env.API_URL}/api/${path}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((res) => {
+    return res.json();
+  });
+
+  return data;
+};
 
 const prepareEmployee = async () => {
-  const data = await Fetch("employee");
+  const data = await fetchData("employee");
   return data.map((item: any) => {
     return {
       id: item.id,
@@ -25,8 +36,11 @@ const prepareEmployee = async () => {
 
 export default async function Employees() {
   const data = await prepareEmployee();
-  const filterDept = filterEmployee("department", await Fetch("department"));
-  const filterRole = filterEmployee("role", await Fetch("role"));
+  const filterDept = filterEmployee(
+    "department",
+    await fetchData("department")
+  );
+  const filterRole = filterEmployee("role", await fetchData("role"));
 
   const option = {
     search: ["username"],
