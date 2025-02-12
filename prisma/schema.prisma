@@ -7,17 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum DeviceStatus {
-  AVAILABLE
-  BORROWED
-  MAINTENANCE
-}
-
-enum BorrowingStatus {
-  BORROWED
-  RETURNED
-}
-
 model Department {
   id         Int        @id @default(autoincrement())
   name       String     @unique
@@ -37,74 +26,98 @@ model Role {
   employee      Employee[]
 }
 
+enum EmployeeStatus {
+  Active
+  Inactive
+}
+
 model Employee {
-  id                 String               @id @default(cuid())
-  username           String
-  email              String
-  password           String
-  first_name         String
-  last_name          String
-  phone              String
-  hire_date          String
-  status             String
-  department_id      Int
-  department         Department           @relation(fields: [department_id], references: [id])
-  role_id            Int
-  role               Role                 @relation(fields: [role_id], references: [id])
-  created_at         DateTime             @default(now())
-  updated_at         DateTime             @updatedAt
-  Borrowing          Borrowing[]
-  MaintenanceRequest MaintenanceRequest[]
-  MaintenanceReport  MaintenanceReport[]
+  id              String         @id @default(cuid())
+  username        String         @unique
+  email           String         @unique
+  password        String
+  firstname       String
+  lastname        String
+  phone           String
+  hiredate        String
+  status          EmployeeStatus
+  department_id   Int
+  department      Department     @relation(fields: [department_id], references: [id])
+  role_id         Int
+  role            Role           @relation(fields: [role_id], references: [id])
+  created_at      DateTime       @default(now())
+  updated_at      DateTime       @updatedAt
+  RequestEmployee Request[]      @relation("RequestEmployee")
+  RequestApproved Request[]      @relation("RequestApproved")
+  HistoryFrom     History[]      @relation("HistoryFrom")
+  HistoryTo       History[]      @relation("HistoryTo")
 }
 
-model Device {
-  id                 String               @id @default(cuid())
-  lot_number         String
-  serial_number      String               @unique
-  name               String
-  purchase_date      String
-  warranty_expiry    String?
-  status             String
-  created_at         DateTime             @default(now())
-  updated_at         DateTime             @updatedAt
-  Borrowing          Borrowing[]
-  MaintenanceRequest MaintenanceRequest[]
+enum AssetStatus {
+  Available
+  Assigned
+  Under
+  Repair
+  Disposed
 }
 
-model Borrowing {
-  id          String   @id @default(cuid())
-  employee_id String
-  employee    Employee @relation(fields: [employee_id], references: [id])
-  device_id   String
-  device      Device   @relation(fields: [device_id], references: [id])
-  borrow_date String
-  return_date String?
-  status      String
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
+model Asset {
+  id              String      @id @default(cuid())
+  lot_number      String
+  serial_number   String      @unique
+  name            String
+  purchase_date   String
+  warranty_expiry String?
+  status          AssetStatus
+  created_at      DateTime    @default(now())
+  updated_at      DateTime    @updatedAt
+  Request         Request[]
+  History         History[]
 }
 
-model MaintenanceRequest {
-  id                String              @id @default(cuid())
-  device_id         String
-  device            Device              @relation(fields: [device_id], references: [id])
-  employee_id       String
-  employee          Employee            @relation(fields: [employee_id], references: [id])
-  issue             String
-  created_at        DateTime            @default(now())
-  updated_at        DateTime            @updatedAt
-  MaintenanceReport MaintenanceReport[]
+enum RequestType {
+  Withdrawal
+  Repair
 }
 
-model MaintenanceReport {
-  id                     String             @id @default(cuid())
-  maintenance_request_id String
-  maintenance_request    MaintenanceRequest @relation(fields: [maintenance_request_id], references: [id])
-  technician_id          String
-  technician             Employee           @relation(fields: [technician_id], references: [id])
-  description            String
-  cost                   Float
-  created_at             DateTime           @default(now())
-  updated_at             DateTime           @updatedAt
+enum RequestStatus {
+  Pending
+  Approved
+  Rejected
+  Completed
+}
+
+model Request {
+  id          String        @id @default(cuid())
+  employee_id String?
+  employee    Employee?     @relation("RequestEmployee", fields: [employee_id], references: [id])
+  asset_id    String
+  asset       Asset         @relation(fields: [asset_id], references: [id])
+  type        RequestType
+  status      RequestStatus
+  approved_by String?
+  approved    Employee?     @relation("RequestApproved", fields: [approved_by], references: [id])
+  created_at  DateTime      @default(now())
+  updated_at  DateTime      @updatedAt
+}
+
+enum HistoryType {
+  Assign
+  Return
+  Repair
+  Unassign
+  Dispose
+}
+
+model History {
+  id         String      @id @default(cuid())
+  asset_id   String
+  asset      Asset       @relation(fields: [asset_id], references: [id])
+  from_id    String?
+  from       Employee?   @relation("HistoryFrom", fields: [from_id], references: [id])
+  to_id      String?
+  to         Employee?   @relation("HistoryTo", fields: [to_id], references: [id])
+  type       HistoryType
+  created_at DateTime    @default(now())
+  updated_at DateTime    @updatedAt
 }
