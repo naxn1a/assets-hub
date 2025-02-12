@@ -5,9 +5,9 @@ export const ErrorHandler = (error: unknown) => {
   };
 };
 
-export const SendHandler = (message: string) => {
+export const SendHandler = (data: Object) => {
   return {
     status: "ok",
-    message: message,
+    ...data,
   };
 };

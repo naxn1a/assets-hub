@@ -35,7 +35,7 @@ export async function POST(req: Request) {
 
     if (already) throw new Error("Employee already exists");
 
-    const password = `${body.firstname}.${body.lastname.slice(0, 3)}`;
+    const password = `${body.firstname}.${body.lastname.slice(0, 2)}`;
 
     await prisma.employee.create({
       data: {
@@ -52,7 +52,11 @@ export async function POST(req: Request) {
       },
     });
 
-    return Response.json(SendHandler("Created successfully"));
+    return Response.json(
+      SendHandler({
+        message: "Employee created",
+      })
+    );
   } catch (error) {
     return Response.json(ErrorHandler(error));
   }

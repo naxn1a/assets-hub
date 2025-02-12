@@ -46,7 +46,11 @@ export async function POST(
       data,
     });
 
-    return Response.json(SendHandler("Updated successfully"));
+    return Response.json(
+      SendHandler({
+        message: "Employee updated",
+      })
+    );
   } catch (error) {
     return Response.json(ErrorHandler(error));
   }
