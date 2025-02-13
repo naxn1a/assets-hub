@@ -3,33 +3,22 @@ import Table from "@/components/table/Table";
 import { EmployeeColumns as columns } from "./colums";
 import { Button } from "@/components/ui/button";
 import { filterEmployee } from "@/utils/data/Employee";
-
-const fetchData = async (path: string) => {
-  const data = await fetch(`${process.env.API_URL}/api/${path}`, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }).then((res) => {
-    return res.json();
-  });
-
-  return data;
-};
+import { fetchData } from "@/utils/FetchData";
 
 const prepareEmployee = async () => {
-  const data = await fetchData("employee");
+  const data = await fetchData({ path: "/employee", auth: true });
   return data.map((item: any) => {
     return {
       id: item.id,
       username: item.username,
       email: item.email,
-      firstname: item.first_name,
-      lastname: item.last_name,
+      firstname: item.firstname,
+      lastname: item.lastname,
       phone: item.phone,
+      hiredate: item.hiredate,
+      status: item.status,
       department: item.department.name,
       role: item.role.name,
-      hiredate: item.hire_date,
-      status: item.status,
     };
   });
 };
@@ -38,9 +27,12 @@ export default async function Employees() {
   const data = await prepareEmployee();
   const filterDept = filterEmployee(
     "department",
-    await fetchData("department")
+    await fetchData({ path: "/department", auth: true })
   );
-  const filterRole = filterEmployee("role", await fetchData("role"));
+  const filterRole = filterEmployee(
+    "role",
+    await fetchData({ path: "/role", auth: true })
+  );
 
   const option = {
     search: ["username"],

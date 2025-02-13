@@ -1,43 +1,32 @@
 import Form from "@/components/form/FormEmployee";
+import { fetchData } from "@/utils/FetchData";
 import { redirect } from "next/navigation";
 
-const prepareFetchData = async (id: string) => {
-  const data = await fetch(`${process.env.API_URL}/api/employee/${id}`, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }).then((res) => {
-    return res.json();
-  });
-
+const prepareEmployee = async (id: string) => {
+  const data = await fetchData({ path: `/employee/${id}`, auth: true });
   if (!data) redirect("/employee");
-  return {
-    id: data.id,
-    username: data.username,
-    email: data.email,
-    firstname: data.first_name,
-    lastname: data.last_name,
-    phone: data.phone,
-    department: data.department.id,
-    role: data.role.id,
-    hiredate: data.hire_date,
-    status: data.status,
-  };
+  return data.map((item: any) => {
+    return {
+      id: item.id,
+      username: item.username,
+      email: item.email,
+      firstname: item.firstname,
+      lastname: item.lastname,
+      phone: item.phone,
+      hiredate: item.hiredate,
+      status: item.status,
+      department: item.department.name,
+      role: item.role.name,
+    };
+  });
 };
 
 const resetPassword = async (id: string, password: string) => {
-  const data = await fetch(
-    `${process.env.API_URL}/api/employee/reset/password/${id}`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        password,
-      }),
-    }
-  ).then((res) => res.json());
+  const data = await fetchData({
+    path: `/employee/reset/password/${id}`,
+    body: { password },
+    auth: true,
+  });
 };
 
 export default async function DetailEmployee({
@@ -45,7 +34,7 @@ export default async function DetailEmployee({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const coreData = await prepareFetchData((await params).id);
+  const coreData = await prepareEmployee((await params).id);
   return (
     <section>
       <h1 className="text-2xl font-semibold mb-4">Detail Employee</h1>

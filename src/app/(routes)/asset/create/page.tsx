@@ -2,7 +2,7 @@ import FormAsset from "@/components/form/FormAsset";
 
 export default async function CreateAsset() {
   const coreData = {
-    status: "AVAILABLE",
+    status: "Available",
   };
   const disabled = ["lot", "serial", "status"];
   return (

@@ -3,48 +3,30 @@ import CardOverview from "@/components/card/CardOverview";
 import { User, Package, Power, Wrench } from "lucide-react";
 import ChartBar from "@/components/chart/ChartBar";
 import ChartPie from "@/components/chart/ChartPie";
-
-const fetchData = async (path: string) => {
-  const data = await fetch(`${process.env.API_URL}/api/${path}`, {
-    headers: {
-      "Content-Type": "application/json",
-      // Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-  }).then((res) => {
-    return res.json();
-  });
-
-  return data;
-};
+import { fetchData } from "@/utils/FetchData";
 
 export default async function Home() {
-  const employee = await fetchData("employee");
-  const asset = await fetchData("device");
-  const apply = await fetchData("borrowing");
-  const repair = await fetchData("maintenance-request");
+  const employee = await fetchData({ path: "/employee", auth: true });
+  const asset = await fetchData({ path: "/asset", auth: true });
 
   return (
     <section>
       <div className="grid grid-cols-4 gap-8 mb-8">
         <Card>
-          <CardOverview
-            title="Employees"
-            Icon={User}
-            value={employee?.length}
-          />
-        </Card>
-        <Card>
-          <CardOverview title="Assets" Icon={Package} value={asset?.length} />
-        </Card>
-        <Card>
-          <CardOverview title="Actives" Icon={Power} value={apply?.length} />
+          <CardOverview title="Employee" Icon={User} value={employee?.length} />
         </Card>
         <Card>
           <CardOverview
-            title="Maintenances"
-            Icon={Wrench}
-            value={repair?.length}
+            title="Available"
+            Icon={Package}
+            value={asset?.length}
           />
+        </Card>
+        <Card>
+          <CardOverview title="Assigned" Icon={Power} value={"0"} />
+        </Card>
+        <Card>
+          <CardOverview title="Under Repair" Icon={Wrench} value={"0"} />
         </Card>
       </div>
       <div className="grid grid-cols-2 gap-8">

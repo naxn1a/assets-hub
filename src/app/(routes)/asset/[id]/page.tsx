@@ -1,20 +1,9 @@
 import Form from "@/components/form/FormAsset";
+import { fetchData } from "@/utils/FetchData";
 import { redirect } from "next/navigation";
 
-const fetchData = async (path: string) => {
-  const data = await fetch(`${process.env.API_URL}/api/${path}`, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }).then((res) => {
-    return res.json();
-  });
-
-  return data;
-};
-
 const prepareFetchData = async (id: string) => {
-  const data = await fetchData(`device/${id}`);
+  const data = await fetchData({ path: `/asset/${id}`, auth: true });
   if (!data) redirect("/asset");
   return {
     id: data.id,

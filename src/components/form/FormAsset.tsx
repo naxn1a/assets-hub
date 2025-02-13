@@ -26,14 +26,7 @@ export default function FormAsset({
 }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      lot: coreData?.lot || "",
-      serial: coreData?.serial || "",
-      name: coreData?.name || "",
-      purchasedate: coreData?.purchasedate || "",
-      warrantyexpiry: coreData?.warrantyexpiry || "",
-      status: coreData?.status.toUpperCase() || "",
-    },
+    defaultValues: coreData,
   });
 
   const options = [

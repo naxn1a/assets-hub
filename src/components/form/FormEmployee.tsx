@@ -9,7 +9,7 @@ import { Form, FormField } from "@/components/ui/form";
 import { Button } from "../ui/button";
 import { formSchema, Data as DataValue, Status } from "@/utils/data/Employee";
 import { formatDate } from "@/utils/Date";
-import { redirect } from "next/navigation";
+import { fetchData } from "@/utils/FetchData";
 
 const prepareOptions = (data: any) => {
   return data.map((item: any) => {
@@ -32,22 +32,16 @@ export default function FormEmployee({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: coreData?.username || "",
-      email: coreData?.email || "",
-      firstname: coreData?.firstname || "",
-      lastname: coreData?.lastname || "",
-      phone: coreData?.phone || "",
+      ...coreData,
       department: coreData?.department.toString() || "",
       role: coreData?.role.toString() || "",
-      hiredate: coreData?.hiredate || "",
-      status: coreData?.status || "",
     },
   });
 
-  const prepareFetchDepartments = async () =>
-    await fetch(`${process.env.API_URL}/api/department`).then((res) =>
-      res.json()
-    );
+  const prepareFetchDepartments = async () => {
+    const data = await fetchData({ path: "/department", auth: true });
+    return data;
+  };
 
   const handleDepartmentChange = (value: string) => {
     const department = departments.find((dept: any) => dept.id == value);
@@ -86,22 +80,14 @@ export default function FormEmployee({
       hiredate: formatDate(values.hiredate),
     };
 
-    const res = await fetch(
-      `${process.env.API_URL}/api/employee/${coreData.id ? coreData.id : ""}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      }
-    );
-
-    const data = await res.json();
+    const data = await fetchData({
+      path: `/employee/${coreData.id ? coreData.id : ""}`,
+      body: formData,
+      auth: true,
+    });
 
     if (data.status === "ok") {
       alert(data.message);
-      // redirect("/employee");
     } else {
       alert(data.message);
     }

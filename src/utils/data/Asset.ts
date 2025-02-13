@@ -54,15 +54,19 @@ export const Data = [
 
 export const Status = [
   {
-    id: "AVAILABLE",
+    id: "Available",
     name: "Available",
   },
   {
-    id: "BORROWED",
-    name: "Borrowed",
+    id: "Assigned",
+    name: "Assigned",
   },
   {
-    id: "MAINTENANCE",
-    name: "Maintenance",
+    id: "UnderRepair",
+    name: "UnderRepair",
+  },
+  {
+    id: "Disposed",
+    name: "Disposed",
   },
 ];

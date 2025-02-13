@@ -95,8 +95,4 @@ export const Status = [
     id: "Inactive",
     name: "Inactive",
   },
-  {
-    id: "Retired",
-    name: "Retired",
-  },
 ];
