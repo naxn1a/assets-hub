@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/sidebar";
 import SidebarItem from "@/utils/SidebarItem";
 import Link from "next/link";
-import { Button } from "../ui/button";
+import SignOut from "./SignOut";
 
 export default function Sidebar() {
   return (
@@ -41,7 +41,7 @@ export default function Sidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <Button className="text-lg font-semibold">Logout</Button>
+        <SignOut />
       </SidebarFooter>
     </SBar>
   );

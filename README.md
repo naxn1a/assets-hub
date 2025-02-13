@@ -7,7 +7,7 @@ To configure the environment variables, update the `.env` file with the appropri
 ```
 API_URL={API_URL}
 DATABASE_URL="postgresql://{USERNAME}:{PASSWORD}@{SERVER}:{PORT}/{DB}"
-SECRET_KEY={SECRET_KEY}
+NEXTAUTH_SECRET={SECRET_KEY}
 ```
 
 ## Installation
