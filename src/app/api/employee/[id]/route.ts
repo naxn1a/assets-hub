@@ -28,10 +28,10 @@ export async function POST(
     let data: any = {
       username: body.username,
       email: body.email,
-      first_name: body.firstname,
-      last_name: body.lastname,
+      firstname: body.firstname,
+      lastname: body.lastname,
       phone: body.phone,
-      hire_date: body.hiredate,
+      hiredate: body.hiredate,
       status: body.status,
       department_id: parseInt(body.department),
       role_id: parseInt(body.role),

@@ -32,7 +32,13 @@ export default function FormEmployee({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      ...coreData,
+      username: coreData?.username || "",
+      email: coreData?.email || "",
+      firstname: coreData?.firstname || "",
+      lastname: coreData?.lastname || "",
+      phone: coreData?.phone || "",
+      hiredate: coreData?.hiredate || "",
+      status: coreData?.status || "",
       department: coreData?.department.toString() || "",
       role: coreData?.role.toString() || "",
     },

@@ -1,110 +1,12 @@
-import { hashPassword } from "@/utils/auth/Hash";
 import prisma from ".";
-import { generateUUIDv4 } from "@/utils/GenerateUUID";
-import { formatDate } from "@/utils/Date";
-
-const MasterData = [
-  {
-    name: "Admin",
-    role: [
-      {
-        name: "Admin",
-      },
-    ],
-  },
-  {
-    name: "Human resource (HR)",
-    role: [
-      { name: "Recruiter" },
-      { name: "HR Manager" },
-      { name: "Training Coordinator" },
-    ],
-  },
-  {
-    name: "Account",
-    role: [
-      { name: "Accountant" },
-      { name: "Financial Analyst" },
-      { name: "Auditor" },
-    ],
-  },
-  {
-    name: "Information Technology (IT)",
-    role: [
-      { name: "Software Developer" },
-      { name: "System Administrator" },
-      { name: "IT Support" },
-    ],
-  },
-];
-
-const MockDevices = [
-  {
-    lot_number: "LOT2025010001",
-    serial_number: generateUUIDv4(),
-    name: `Macbook Pro2025`,
-    purchase_date: formatDate(new Date()),
-    warranty_expiry: formatDate(new Date()),
-    status: "Available",
-  },
-  {
-    lot_number: "LOT2025010001",
-    serial_number: generateUUIDv4(),
-    name: `Macbook Pro2025`,
-    purchase_date: formatDate(new Date()),
-    warranty_expiry: formatDate(new Date()),
-    status: "Available",
-  },
-  {
-    lot_number: "LOT2025010001",
-    serial_number: generateUUIDv4(),
-    name: `Macbook Pro2025`,
-    purchase_date: formatDate(new Date()),
-    warranty_expiry: formatDate(new Date()),
-    status: "Available",
-  },
-  {
-    lot_number: "LOT2025010001",
-    serial_number: generateUUIDv4(),
-    name: `Macbook Pro2025`,
-    purchase_date: formatDate(new Date()),
-    warranty_expiry: formatDate(new Date()),
-    status: "Available",
-  },
-  {
-    lot_number: "LOT2025010001",
-    serial_number: generateUUIDv4(),
-    name: `Notebook 2019`,
-    purchase_date: formatDate(new Date()),
-    warranty_expiry: formatDate(new Date()),
-    status: "Available",
-  },
-  {
-    lot_number: "LOT2025010001",
-    serial_number: generateUUIDv4(),
-    name: `Notebook 2019`,
-    purchase_date: formatDate(new Date()),
-    warranty_expiry: formatDate(new Date()),
-    status: "Available",
-  },
-];
-
-const MasterAdmin = {
-  username: "admin",
-  email: "admin@assets.hub",
-  password: await hashPassword("admin"),
-  first_name: "admin",
-  last_name: "admin",
-  phone: "0000000000",
-  hire_date: formatDate(new Date()),
-  status: "Active",
-  department_id: 1,
-  role_id: 1,
-};
+import { AssetStatus, EmployeeStatus } from "@prisma/client";
+import Master from "@/database/master/data";
+import { MockAsset } from "@/database/mock/asset";
 
 async function main() {
+  const master = await Master();
   await prisma.$transaction(async (tx) => {
-    MasterData.forEach(async (dept) => {
+    master.data.forEach(async (dept) => {
       await tx.department.create({
         data: {
           name: dept.name,
@@ -114,13 +16,18 @@ async function main() {
         },
       });
     });
-
-    await tx.device.createMany({
-      data: [...MockDevices],
+    await tx.asset.createMany({
+      data: MockAsset.map((asset) => ({
+        ...asset,
+        status: asset.status as AssetStatus,
+      })),
     });
 
     await tx.employee.create({
-      data: MasterAdmin,
+      data: {
+        ...master.admin,
+        status: master.admin.status as EmployeeStatus,
+      },
     });
   });
 }

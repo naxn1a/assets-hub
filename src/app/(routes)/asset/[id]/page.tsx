@@ -22,7 +22,7 @@ export default async function DetailAsset({
   params: Promise<{ id: string }>;
 }) {
   const coreData = await prepareFetchData((await params).id);
-  const disabled = ["lot", "serial", "name", "purchasedate", "status"];
+  const disabled = ["lot", "serial", "name", "purchasedate" ];
   return (
     <section>
       <h1 className="text-2xl font-semibold mb-4">Detail Asset</h1>

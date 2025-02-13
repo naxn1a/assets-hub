@@ -26,9 +26,7 @@ export const formSchema = z.object({
   email: z.string().email(),
   firstname: z.string().min(2).max(50),
   lastname: z.string().min(2).max(50),
-  phone: z.string().regex(/^[0-9]{10}$/, {
-    message: "Invalid phone number",
-  }),
+  phone: z.string().min(2).max(50),
   department: z.string().nonempty({ message: "Department is required" }),
   role: z.string().nonempty({ message: "Role is required" }),
   hiredate: z.string().nonempty({ message: "Hire date is required" }),

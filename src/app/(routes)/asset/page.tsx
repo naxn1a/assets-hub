@@ -28,7 +28,7 @@ export default async function Asset() {
 
   return (
     <div>
-      <h1 className="text-3xl font-semibold">Assets</h1>
+      <h1 className="text-3xl font-semibold">Asset</h1>
       <Table columns={columns} data={data} option={option}>
         <div className="flex justify-end">
           <Link href="/asset/create">
