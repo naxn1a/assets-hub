@@ -1,9 +1,5 @@
-import Sidebar from "@/components/sidebar/SidebarProvider";
+import SidebarLayout from "@/components/sidebar/SidebarLayout";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  return (
-    <Sidebar>
-      <div>{children}</div>
-    </Sidebar>
-  );
+  return <SidebarLayout>{children}</SidebarLayout>;
 }
