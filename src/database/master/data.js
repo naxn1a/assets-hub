@@ -13,27 +13,15 @@ export default async function () {
     },
     {
       name: "Human resource (HR)",
-      role: [
-        { name: "Recruiter" },
-        { name: "HR Manager" },
-        { name: "Training Coordinator" },
-      ],
+      role: [{ name: "Hr" }],
     },
     {
       name: "Account",
-      role: [
-        { name: "Accountant" },
-        { name: "Financial Analyst" },
-        { name: "Auditor" },
-      ],
+      role: [{ name: "Account" }],
     },
     {
       name: "Information Technology (IT)",
-      role: [
-        { name: "Software Developer" },
-        { name: "System Administrator" },
-        { name: "IT Support" },
-      ],
+      role: [{ name: "It" }],
     },
   ];
 
