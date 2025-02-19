@@ -48,6 +48,10 @@ export default function <TData, TValue>({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start">
+          <DropdownMenuItem onClick={() => column.clearSorting()}>
+            <ChevronsUpDown className="h-3.5 w-3.5 text-muted-foreground/70" />
+            Default
+          </DropdownMenuItem>
           <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
             <ArrowUp className="h-3.5 w-3.5 text-muted-foreground/70" />
             Asc
