@@ -4,6 +4,8 @@ import "./globals.css";
 import Provider from "@/provider";
 import SessionProvider from "@/provider/Session";
 import { getServerSession } from "next-auth";
+import { authOptions } from "./api/auth/[...nextauth]/route";
+import AuthContextProvider from "@/context/AuthContext";
 
 export const metadata: Metadata = {
   title: "Assets Hub",
@@ -20,12 +22,14 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={prompt.className}>
         <SessionProvider session={session}>
-          <Provider>{children}</Provider>
+          <AuthContextProvider>
+            <Provider>{children}</Provider>
+          </AuthContextProvider>
         </SessionProvider>
       </body>
     </html>

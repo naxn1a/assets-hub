@@ -15,21 +15,14 @@ import Navbar from "@/components/navbar/Navbar";
 import Link from "next/link";
 import SidebarItem from "@/utils/SidebarItem";
 import SignOut from "./SignOut";
-import { getSession, useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useMyContext } from "@/context/AuthContext";
 
 export default function SidebarLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [session, setSession] = useState<any>();
-
-  useEffect(() => {
-    getSession().then((s) => {
-      setSession(s);
-    });
-  }, []);
+  const { user } = useMyContext();
 
   return (
     <SidebarProv>
@@ -43,7 +36,7 @@ export default function SidebarLayout({
               <SidebarMenu>
                 {SidebarItem.map(
                   (item) =>
-                    item.role.includes(session?.user.role) && (
+                    item.role.includes(user!.role) && (
                       <SidebarMenuItem
                         key={item.title}
                         className="hover:bg-gray-100 rounded-xl duration-300"

@@ -1,7 +1,6 @@
 import prisma from ".";
-import { AssetStatus, EmployeeStatus } from "@prisma/client";
+import { EmployeeStatus } from "@prisma/client";
 import Master from "@/database/master/data";
-import { MockAsset } from "@/database/mock/asset";
 
 async function main() {
   const master = await Master();
@@ -15,12 +14,6 @@ async function main() {
           },
         },
       });
-    });
-    await tx.asset.createMany({
-      data: MockAsset.map((asset) => ({
-        ...asset,
-        status: asset.status as AssetStatus,
-      })),
     });
 
     await tx.employee.create({
