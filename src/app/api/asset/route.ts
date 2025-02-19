@@ -14,23 +14,26 @@ export async function GET() {
 
 export async function POST(req: Request) {
   const data = await req.json();
+  let lotRecord = 1;
   try {
     const now = new Date();
     const currentYear = now.getFullYear();
     const currentMonth = now.getMonth() + 1;
 
-    let lotRecord = await prisma.asset.count({
-      where: {
-        created_at: {
-          gte: new Date(currentYear, now.getMonth(), 1),
-          lte: new Date(currentYear, currentMonth, 0),
-        },
+    const record = await prisma.asset.findMany({
+      orderBy: {
+        created_at: "desc",
       },
+      take: 1,
     });
+
+    if (record.length > 0) {
+      lotRecord = parseInt(record[0].lot_number.slice(-3)) + 1;
+    }
 
     const y = currentYear.toString().slice(2, 4);
     const m = `${currentMonth}`.padStart(2, "0");
-    const c = `${lotRecord + 1}`.padStart(3, "0");
+    const c = `${lotRecord}`.padStart(3, "0");
 
     const assets = [];
     for (let i = 0; i < data.amount; i++) {

@@ -47,7 +47,8 @@ model Employee {
   role            Role           @relation(fields: [role_id], references: [id])
   created_at      DateTime       @default(now())
   updated_at      DateTime       @updatedAt
-  RequestEmployee Request[]      @relation("RequestEmployee")
+  RequestTo       Request[]      @relation("RequestTo")
+  RequestFrom     Request[]      @relation("RequestFrom")
   RequestApproved Request[]      @relation("RequestApproved")
   HistoryFrom     History[]      @relation("HistoryFrom")
   HistoryTo       History[]      @relation("HistoryTo")
@@ -87,17 +88,19 @@ enum RequestStatus {
 }
 
 model Request {
-  id          String        @id @default(cuid())
-  employee_id String?
-  employee    Employee?     @relation("RequestEmployee", fields: [employee_id], references: [id])
-  asset_id    String
-  asset       Asset         @relation(fields: [asset_id], references: [id])
-  type        RequestType
-  status      RequestStatus
-  approved_by String?
-  approved    Employee?     @relation("RequestApproved", fields: [approved_by], references: [id])
-  created_at  DateTime      @default(now())
-  updated_at  DateTime      @updatedAt
+  id           String        @id @default(cuid())
+  employee_id  String?
+  employee     Employee?     @relation("RequestTo", fields: [employee_id], references: [id])
+  asset_id     String
+  asset        Asset         @relation(fields: [asset_id], references: [id])
+  type         RequestType
+  status       RequestStatus
+  request_from String?
+  requester    Employee?     @relation("RequestFrom", fields: [request_from], references: [id])
+  approved_by  String?
+  approved     Employee?     @relation("RequestApproved", fields: [approved_by], references: [id])
+  created_at   DateTime      @default(now())
+  updated_at   DateTime      @updatedAt
 }
 
 enum HistoryType {

@@ -19,7 +19,7 @@ export default [
     title: "Asset",
     url: "/asset",
     icon: Package,
-    role: ["Admin", "It"],
+    role: ["Admin", "It", "Hr"],
   },
   // Account
   {

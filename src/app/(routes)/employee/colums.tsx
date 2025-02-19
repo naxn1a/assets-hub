@@ -1,7 +1,6 @@
 "use client";
 import { ColumnDef } from "@tanstack/react-table";
 import { LucideEdit } from "lucide-react";
-import { Checkbox } from "@/components/ui/checkbox";
 import TableColumnHeader from "@/components/table/TableColumnHeader";
 import Link from "next/link";
 
