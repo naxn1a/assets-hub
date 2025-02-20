@@ -1,4 +1,5 @@
 "use client";
+import ComboBox from "../combobox/ComboBox";
 import DatePicker from "../date/DatePicker";
 import {
   FormControl,
@@ -14,11 +15,13 @@ export default function MyField({
   name,
   placeholder,
   type,
+  options,
 }: {
   form: any;
   name: string;
   placeholder?: string;
   type?: string;
+  options?: any;
 }) {
   return (
     <FormField
@@ -30,6 +33,13 @@ export default function MyField({
           <FormControl>
             {type === "text" ? (
               <Input {...field} placeholder={placeholder} />
+            ) : type === "select" ? (
+              <ComboBox
+                label={placeholder}
+                value={field.value}
+                onChange={(text: string) => field.onChange(text)}
+                options={options}
+              />
             ) : type === "date" ? (
               <div>
                 <DatePicker

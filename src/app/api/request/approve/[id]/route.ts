@@ -1,13 +1,20 @@
 import prisma from "@/database";
+import { getServerSession } from "next-auth";
 
 export async function POST(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const id = (await params).id;
+  const session = await getServerSession();
   try {
-    const id = (await params).id;
-
     const data = await prisma.$transaction(async (tx) => {
+      const approvedBy = await tx.employee.findUnique({
+        where: { email: session?.user?.email ?? undefined },
+      });
+
+      if (!approvedBy) throw new Error("Approver not found");
+
       const request = await tx.request.findUnique({
         where: {
           id,
@@ -22,6 +29,7 @@ export async function POST(
         },
         data: {
           status: "Approved",
+          approved_by: approvedBy.id,
         },
       });
 

@@ -8,6 +8,8 @@ import { fetchData } from "@/utils/FetchData";
 export default async function Home() {
   const employee = await fetchData({ path: "/employee", auth: true });
   const asset = await fetchData({ path: "/asset", auth: true });
+  const assigned = await fetchData({ path: "/asset/assigned", auth: true });
+  const under_repair = await fetchData({ path: "/asset/repair", auth: true });
 
   return (
     <section>
@@ -23,10 +25,18 @@ export default async function Home() {
           />
         </Card>
         <Card>
-          <CardOverview title="Assigned" Icon={Power} value={"0"} />
+          <CardOverview
+            title="Assigned"
+            Icon={Power}
+            value={assigned?.length}
+          />
         </Card>
         <Card>
-          <CardOverview title="Under Repair" Icon={Wrench} value={"0"} />
+          <CardOverview
+            title="Under Repair"
+            Icon={Wrench}
+            value={under_repair?.length}
+          />
         </Card>
       </div>
       <div className="grid grid-cols-2 gap-8">
