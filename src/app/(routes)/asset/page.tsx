@@ -61,10 +61,12 @@ export default async function Asset() {
         </Table>
       </RoleTable>
       <RoleTable role="It">
-        <h1 className="text-3xl font-semibold">Approve</h1>
+        <h1 className="text-3xl font-semibold">Report</h1>
         <Table
           columns={ApproveAssetColumns}
-          data={dataRequestAsset}
+          data={dataRequestAsset.filter(
+            (item: any) => item.status === "Pending"
+          )}
           option={{
             search: ["employee"],
           }}

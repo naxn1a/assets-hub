@@ -3,6 +3,16 @@ import { ColumnDef } from "@tanstack/react-table";
 import { LucideEdit } from "lucide-react";
 import TableColumnHeader from "@/components/table/TableColumnHeader";
 import Link from "next/link";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { handleApprove, handleReject } from "./_actions";
 
 export const AllAssetColumns: ColumnDef<any>[] = [
   {
@@ -144,9 +154,26 @@ export const ApproveAssetColumns: ColumnDef<any>[] = [
     cell: ({ row }) => {
       const data = row.original;
       return (
-        <Link href={`/asset/${data.id}`}>
-          <LucideEdit className="h-4 w-4" />
-        </Link>
+        <Dialog>
+          <DialogTrigger asChild>
+            <button>
+              <LucideEdit className="h-4 w-4" />
+            </button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Do you want to approve it?</DialogTitle>
+            </DialogHeader>
+            <DialogFooter>
+              <Button onClick={() => handleApprove(data.id)} variant="default">
+                Yes
+              </Button>
+              <Button onClick={() => handleReject(data.id)} variant="secondary">
+                No
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       );
     },
   },
