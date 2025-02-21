@@ -35,7 +35,7 @@ const prepareRequestAsset = async () => {
       type: item.type,
       status: item.status,
       requester: item.requester.email,
-      approved: item.approved.email,
+      approved: item?.approved?.email || "",
     };
   });
 };
