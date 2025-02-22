@@ -8,57 +8,61 @@ datasource db {
 }
 
 model Department {
-  id         Int        @id @default(autoincrement())
-  name       String     @unique
-  created_at DateTime   @default(now())
-  updated_at DateTime   @updatedAt
-  role       Role[]
-  employee   Employee[]
+  id         String   @id @default(cuid())
+  name       String   @unique
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  role       Role[]   @relation()
+  user       User[]   @relation()
 }
 
 model Role {
-  id            Int        @id @default(autoincrement())
+  id            String     @id @default(cuid())
   name          String     @unique
-  department_id Int
-  department    Department @relation(fields: [department_id], references: [id])
+  department_id String
+  department    Department @relation(fields: [department_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
   created_at    DateTime   @default(now())
   updated_at    DateTime   @updatedAt
-  employee      Employee[]
+  user          User[]
+
+  @@index([department_id])
 }
 
-enum EmployeeStatus {
+enum UserStatus {
   Active
   Inactive
 }
 
-model Employee {
-  id              String         @id @default(cuid())
-  username        String         @unique
-  email           String         @unique
-  password        String
-  firstname       String
-  lastname        String
-  phone           String
-  hiredate        String
-  status          EmployeeStatus
-  department_id   Int
-  department      Department     @relation(fields: [department_id], references: [id])
-  role_id         Int
-  role            Role           @relation(fields: [role_id], references: [id])
-  created_at      DateTime       @default(now())
-  updated_at      DateTime       @updatedAt
-  RequestTo       Request[]      @relation("RequestTo")
-  RequestFrom     Request[]      @relation("RequestFrom")
-  RequestApproved Request[]      @relation("RequestApproved")
-  HistoryFrom     History[]      @relation("HistoryFrom")
-  HistoryTo       History[]      @relation("HistoryTo")
+model User {
+  id            String     @id @default(cuid())
+  email         String     @unique
+  password      String
+  firstname     String
+  lastname      String
+  phone         String
+  hiredate      DateTime
+  status        UserStatus
+  department_id String
+  department    Department @relation(fields: [department_id], references: [id])
+  role_id       String
+  role          Role       @relation(fields: [role_id], references: [id])
+  created_at    DateTime   @default(now())
+  updated_at    DateTime   @updatedAt
+  asset         Asset[]
+  reported_by   AuditLog[] @relation("ReportedBy")
+  handled_by    AuditLog[] @relation("HandledBy")
+
+  @@index([department_id])
+  @@index([role_id])
 }
 
 enum AssetStatus {
-  Available
-  Assigned
-  UnderRepair
-  Disposed
+  Available // พร้อมใช้งาน
+  Assigned // ถูกมอบหมาย
+  Maintenance // ซ่อมบำรุง
+  Returned // คืน
+  Disposed // ถูกกำจัด
+  Lost // สูญหาย
 }
 
 model Asset {
@@ -66,60 +70,51 @@ model Asset {
   lot_number      String
   serial_number   String      @unique
   name            String
-  purchase_date   String
-  warranty_expiry String?
+  purchase_date   DateTime
+  warranty_expiry DateTime?
   status          AssetStatus
+  user_id         String?
+  user            User?       @relation(fields: [user_id], references: [id])
   created_at      DateTime    @default(now())
   updated_at      DateTime    @updatedAt
-  Request         Request[]
-  History         History[]
+  auditLog        AuditLog[]
+
+  @@index([user_id])
 }
 
-enum RequestType {
-  Withdrawal
-  Repair
+enum AuditLogType {
+  Request // การขอใช้งานทรัพย์สิน
+  Transfer // การโอนย้ายทรัพย์สิน
+  Approval // การอนุมัติคำขอ
+  Assignment // การมอบหมายทรัพย์สินให้ผู้ใช้งาน
+  Return // การคืนทรัพย์สิน
+  Maintenance // การซ่อมบำรุงหรือตรวจสอบทรัพย์สิน
+  Disposal // การกำจัดทรัพย์สิน
 }
 
-enum RequestStatus {
-  Pending
-  Approved
-  Rejected
-  Completed
+enum AuditLogStatus {
+  Pending // กำลังรอการดำเนินการ
+  Approved // ได้รับการอนุมัติแล้ว
+  Rejected // ถูกปฏิเสธ
+  Completed // เสร็จสิ้น
+  Cancelled // ถูกยกเลิก
 }
 
-model Request {
-  id           String        @id @default(cuid())
-  employee_id  String?
-  employee     Employee?     @relation("RequestTo", fields: [employee_id], references: [id])
-  asset_id     String
-  asset        Asset         @relation(fields: [asset_id], references: [id])
-  type         RequestType
-  status       RequestStatus
-  request_from String?
-  requester    Employee?     @relation("RequestFrom", fields: [request_from], references: [id])
-  approved_by  String?
-  approved     Employee?     @relation("RequestApproved", fields: [approved_by], references: [id])
-  created_at   DateTime      @default(now())
-  updated_at   DateTime      @updatedAt
-}
+model AuditLog {
+  id             String         @id @default(cuid())
+  asset_id       String
+  asset          Asset          @relation(fields: [asset_id], references: [id])
+  type           AuditLogType
+  status         AuditLogStatus
+  remark         String?        @default("")
+  reported_by_id String
+  reported_by    User           @relation("ReportedBy", fields: [reported_by_id], references: [id])
+  handled_by_id  String?
+  handled_by     User?          @relation("HandledBy", fields: [handled_by_id], references: [id])
+  created_at     DateTime       @default(now())
+  updated_at     DateTime       @updatedAt
 
-enum HistoryType {
-  Assign
-  Return
-  Repair
-  Unassign
-  Dispose
-}
-
-model History {
-  id         String      @id @default(cuid())
-  asset_id   String
-  asset      Asset       @relation(fields: [asset_id], references: [id])
-  from_id    String?
-  from       Employee?   @relation("HistoryFrom", fields: [from_id], references: [id])
-  to_id      String?
-  to         Employee?   @relation("HistoryTo", fields: [to_id], references: [id])
-  type       HistoryType
-  created_at DateTime    @default(now())
-  updated_at DateTime    @updatedAt
+  @@index([asset_id])
+  @@index([reported_by_id])
+  @@index([handled_by_id])
 }

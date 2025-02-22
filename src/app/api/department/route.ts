@@ -1,11 +1,12 @@
 import prisma from "@/database";
+import { SendHandler } from "@/utils/ErrorHandler";
 
 export async function GET() {
-  return Response.json(
-    await prisma.department.findMany({
-      include: {
-        role: true,
-      },
-    })
-  );
+  const department = await prisma.department.findMany({
+    include: {
+      role: true,
+    },
+  });
+
+  return SendHandler(department);
 }

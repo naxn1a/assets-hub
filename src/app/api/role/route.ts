@@ -1,5 +1,8 @@
 import prisma from "@/database";
+import { SendHandler } from "@/utils/ErrorHandler";
 
 export async function GET() {
-  return Response.json(await prisma.role.findMany());
+  const role = await prisma.role.findMany();
+
+  return SendHandler(role);
 }

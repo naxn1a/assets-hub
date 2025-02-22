@@ -1,5 +1,4 @@
 "use server";
-import { cookies } from "next/headers";
 import { ErrorHandler } from "./ErrorHandler";
 
 interface FetchDataProps {
@@ -8,26 +7,19 @@ interface FetchDataProps {
   auth?: boolean;
 }
 
-export const fetchData = async ({
-  path,
-  body,
-  auth = false,
-}: FetchDataProps) => {
+export const fetchData = async ({ path, body }: FetchDataProps) => {
   try {
-    const cookieStore = await cookies();
-
-    const data = fetch(`${process.env.API_URL}/api${path}`, {
+    const res = await fetch(`${process.env.API_URL}/api${path}`, {
       method: body ? "POST" : "GET",
       headers: {
         "Content-Type": "application/json",
-        ...(auth && {
-          Authorization: `Bearer ${cookieStore.get("token")?.value}`,
-        }),
       },
       body: JSON.stringify(body),
-    }).then((res) => {
-      return res.json();
     });
+
+    const data = await res.json();
+
+    if (!res.ok) throw new Error("Failed to fetch data");
 
     return data;
   } catch (error) {
