@@ -5,7 +5,8 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/route";
 import SessionProvider from "@/provider/Session";
 import AuthContextProvider from "@/context/AuthContext";
-import { ThemeProvider } from "@/components/theme";
+import { ThemeProvider } from "@/provider/Theme";
+import SidebarLayout from "@/components/sidebar/SidebarLayout";
 
 export const metadata: Metadata = {
   title: "Assets Hub",
@@ -28,7 +29,9 @@ export default async function RootLayout({
       <body className={prompt.className}>
         <SessionProvider session={session}>
           <AuthContextProvider>
-            <ThemeProvider>{children}</ThemeProvider>
+            <ThemeProvider>
+              <SidebarLayout>{children}</SidebarLayout>
+            </ThemeProvider>
           </AuthContextProvider>
         </SessionProvider>
       </body>

@@ -1,11 +1,11 @@
 import prisma from ".";
-import { EmployeeStatus } from "@prisma/client";
-import Master from "@/database/master/data";
+import masterData from "./master/data.json";
+import { hashPassword } from "@/utils/auth/Hash";
+import { UserStatus } from "@prisma/client";
 
 async function main() {
-  const master = await Master();
   await prisma.$transaction(async (tx) => {
-    master.data.forEach(async (dept) => {
+    masterData.forEach(async (dept) => {
       await tx.department.create({
         data: {
           name: dept.name,
@@ -16,10 +16,26 @@ async function main() {
       });
     });
 
-    await tx.employee.create({
+    const dept = await tx.department.findFirst({
+      where: {
+        name: "Admin",
+      },
+      include: {
+        role: true,
+      },
+    });
+
+    await tx.user.create({
       data: {
-        ...master.admin,
-        status: master.admin.status as EmployeeStatus,
+        email: "admin@assets.hub",
+        password: await hashPassword("admin"),
+        firstname: "admin",
+        lastname: "admin",
+        phone: "00",
+        hiredate: new Date(),
+        status: UserStatus.Active,
+        department_id: dept!.id,
+        role_id: dept?.role.find((r) => r.name === "Admin")?.id || "",
       },
     });
   });

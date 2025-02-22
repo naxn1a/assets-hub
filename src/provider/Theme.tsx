@@ -1,9 +1,9 @@
-import { ThemeProvider } from "@/components/theme";
+import { ThemeProvider as Theme } from "@/components/theme";
 import { Toaster } from "@/components/ui/toaster";
 
-export const Provider = ({ children }: { children: React.ReactNode }) => {
+export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   return (
-    <ThemeProvider
+    <Theme
       attribute="class"
       defaultTheme="light"
       enableSystem={false}
@@ -11,6 +11,6 @@ export const Provider = ({ children }: { children: React.ReactNode }) => {
     >
       {children}
       <Toaster />
-    </ThemeProvider>
+    </Theme>
   );
 };

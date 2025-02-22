@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Admin",
+    "role": [
+      {
+        "name": "Admin"
+      }
+    ]
+  },
+  {
+    "name": "Human resource",
+    "role": [
+      {
+        "name": "Recruiter"
+      },
+      {
+        "name": "HR Manager"
+      },
+      {
+        "name": "Training Coordinator"
+      }
+    ]
+  },
+  {
+    "name": "Account",
+    "role": [
+      {
+        "name": "Accountant"
+      },
+      {
+        "name": "Financial Analyst"
+      },
+      {
+        "name": "Auditor"
+      }
+    ]
+  },
+  {
+    "name": "Information Technology",
+    "role": [
+      {
+        "name": "Software Developer"
+      },
+      {
+        "name": "System Administrator"
+      },
+      {
+        "name": "IT Support"
+      }
+    ]
+  }
+]

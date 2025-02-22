@@ -17,9 +17,25 @@ export default [
   // It
   {
     title: "Asset",
-    url: "/asset",
     icon: Package,
     role: ["Admin", "It", "Hr"],
+    sub: [
+      {
+        title: "Inventory",
+        url: "/inventory",
+        role: ["Admin", "It", "Hr"],
+      },
+      {
+        title: "Report",
+        url: "/report",
+        role: ["Admin", "It", "Hr"],
+      },
+      {
+        title: "Request",
+        url: "/request",
+        role: ["Admin", "It", "Hr"],
+      },
+    ],
   },
   // Account
   {

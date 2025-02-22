@@ -9,13 +9,17 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
   SidebarProvider as SidebarProv,
+  SidebarTrigger,
 } from "@/components/ui/sidebar";
-import Navbar from "@/components/navbar/Navbar";
 import Link from "next/link";
 import SidebarItem from "@/utils/SidebarItem";
 import SignOut from "./SignOut";
 import { useMyContext } from "@/context/AuthContext";
+import { ModeToggle } from "../mode/ModeToggle";
 
 export default function SidebarLayout({
   children,
@@ -37,16 +41,39 @@ export default function SidebarLayout({
                 {SidebarItem.map(
                   (item) =>
                     item.role.includes(user!.role) && (
-                      <SidebarMenuItem
-                        key={item.title}
-                        className="hover:bg-gray-100 rounded-xl duration-300"
-                      >
-                        <SidebarMenuButton asChild>
-                          <Link href={item.url}>
-                            <item.icon />
-                            <span>{item.title}</span>
-                          </Link>
+                      <SidebarMenuItem key={item.title} className="mt-2">
+                        <SidebarMenuButton
+                          className={`${
+                            item.url && "hover:bg-primary hover:text-white"
+                          }`}
+                        >
+                          <item.icon />
+                          {item.url ? (
+                            <Link href={item.url}>{item.title}</Link>
+                          ) : (
+                            <p className="cursor-default">{item.title}</p>
+                          )}
                         </SidebarMenuButton>
+                        {item.sub && (
+                          <SidebarMenuSub>
+                            {item.sub.map(
+                              (sub) =>
+                                sub.role.includes(user!.role) && (
+                                  <SidebarMenuSubItem
+                                    key={sub.title}
+                                    className="mt-2"
+                                  >
+                                    <SidebarMenuSubButton
+                                      asChild
+                                      className="hover:bg-primary hover:text-white"
+                                    >
+                                      <Link href={sub.url}>{sub.title}</Link>
+                                    </SidebarMenuSubButton>
+                                  </SidebarMenuSubItem>
+                                )
+                            )}
+                          </SidebarMenuSub>
+                        )}
                       </SidebarMenuItem>
                     )
                 )}
@@ -59,7 +86,12 @@ export default function SidebarLayout({
         </SidebarFooter>
       </Sidebar>
       <main className="flex flex-col w-full h-full">
-        <Navbar />
+        <div className="flex justify-between items-center py-4 px-8">
+          <SidebarTrigger />
+          <div className="flex items-center space-x-4">
+            <ModeToggle />
+          </div>
+        </div>
         <div className="mx-8">{children}</div>
       </main>
     </SidebarProv>
