@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { Prompt } from "next/font/google";
 import "./globals.css";
-import Provider from "@/provider";
-import SessionProvider from "@/provider/Session";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/route";
+import SessionProvider from "@/provider/Session";
 import AuthContextProvider from "@/context/AuthContext";
+import { ThemeProvider } from "@/components/theme";
 
 export const metadata: Metadata = {
   title: "Assets Hub",
@@ -28,7 +28,7 @@ export default async function RootLayout({
       <body className={prompt.className}>
         <SessionProvider session={session}>
           <AuthContextProvider>
-            <Provider>{children}</Provider>
+            <ThemeProvider>{children}</ThemeProvider>
           </AuthContextProvider>
         </SessionProvider>
       </body>
