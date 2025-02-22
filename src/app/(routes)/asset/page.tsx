@@ -70,13 +70,7 @@ export default async function Asset() {
           option={{
             search: ["employee"],
           }}
-        >
-          <div className="flex justify-end">
-            <Link href="/asset/request">
-              <Button>New Request</Button>
-            </Link>
-          </div>
-        </Table>
+        ></Table>
       </RoleTable>
       <RoleTable role="Hr">
         <h1 className="text-3xl font-semibold">Request</h1>

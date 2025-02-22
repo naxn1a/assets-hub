@@ -57,7 +57,7 @@ export default function RequestAsset() {
       ...values,
     };
 
-    const res = await fetch("/api/request/create", {
+    const res = await fetch("/api/request", {
       method: "POST",
       body: JSON.stringify(formData),
       headers: {

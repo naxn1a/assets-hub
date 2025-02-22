@@ -7,9 +7,18 @@ import { fetchData } from "@/utils/FetchData";
 
 export default async function Home() {
   const employee = await fetchData({ path: "/employee", auth: true });
-  const asset = await fetchData({ path: "/asset/available", auth: true });
-  const assigned = await fetchData({ path: "/asset/assigned", auth: true });
-  const under_repair = await fetchData({ path: "/asset/repair", auth: true });
+  const asset = await fetchData({
+    path: "/asset/status/Available",
+    auth: true,
+  });
+  const assigned = await fetchData({
+    path: "/asset/status/Assigned",
+    auth: true,
+  });
+  const under_repair = await fetchData({
+    path: "/asset/status/UnderRepair",
+    auth: true,
+  });
 
   return (
     <section>
