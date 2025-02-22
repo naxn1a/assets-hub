@@ -14,7 +14,7 @@ export const SendHandler = (data: Object) => {
   return Response.json(
     {
       status: "ok",
-      ...data,
+      data,
     },
     {
       status: 200,

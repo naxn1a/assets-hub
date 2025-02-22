@@ -42,18 +42,19 @@ export default function SidebarLayout({
                   (item) =>
                     item.role.includes(user!.role) && (
                       <SidebarMenuItem key={item.title} className="mt-2">
-                        <SidebarMenuButton
-                          className={`${
-                            item.url && "hover:bg-primary hover:text-white"
-                          }`}
-                        >
-                          <item.icon />
-                          {item.url ? (
-                            <Link href={item.url}>{item.title}</Link>
-                          ) : (
-                            <p className="cursor-default">{item.title}</p>
-                          )}
-                        </SidebarMenuButton>
+                        {item.url ? (
+                          <Link href={item.url}>
+                            <SidebarMenuButton className="hover:bg-primary hover:text-white">
+                              <item.icon />
+                              {item.title}
+                            </SidebarMenuButton>
+                          </Link>
+                        ) : (
+                          <SidebarMenuButton className="cursor-default">
+                            <item.icon />
+                            {item.title}
+                          </SidebarMenuButton>
+                        )}
                         {item.sub && (
                           <SidebarMenuSub>
                             {item.sub.map(
