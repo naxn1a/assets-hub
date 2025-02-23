@@ -32,12 +32,7 @@ export default function FormContainer({
       <FormLabel>{placeholder}</FormLabel>
       <FormControl>
         {type === "text" ? (
-          <Input
-            {...field}
-            placeholder={placeholder}
-            className="w-2/3"
-            disabled={disabled}
-          />
+          <Input {...field} placeholder={placeholder} disabled={disabled} className="w-2/3" />
         ) : type === "select" ? (
           <ComboBox
             props={{ disabled }}

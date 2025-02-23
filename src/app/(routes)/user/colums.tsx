@@ -4,13 +4,7 @@ import { LucideEdit } from "lucide-react";
 import TableColumnHeader from "@/components/table/TableColumnHeader";
 import Link from "next/link";
 
-export const EmployeeColumns: ColumnDef<any>[] = [
-  {
-    accessorKey: "username",
-    header: ({ column }) => (
-      <TableColumnHeader column={column} title="Username" />
-    ),
-  },
+export const UserColumns: ColumnDef<any>[] = [
   {
     accessorKey: "email",
     header: ({ column }) => <TableColumnHeader column={column} title="Email" />,
@@ -58,7 +52,7 @@ export const EmployeeColumns: ColumnDef<any>[] = [
     cell: ({ row }) => {
       const data = row.original;
       return (
-        <Link href={`/employee/${data.id}`}>
+        <Link href={`/user/${data.id}`}>
           <LucideEdit className="h-4 w-4" />
         </Link>
       );

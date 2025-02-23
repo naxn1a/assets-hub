@@ -3,7 +3,7 @@ import { fetchData } from "@/utils/FetchData";
 import { redirect } from "next/navigation";
 
 const prepareFetchData = async (id: string) => {
-  const data = await fetchData({ path: `/asset/${id}`, auth: true });
+  const data = await fetchData({ path: `/asset/${id}` });
   if (!data) redirect("/asset");
   return {
     id: data.id,

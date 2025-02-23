@@ -10,7 +10,7 @@ import { fetchData } from "@/utils/FetchData";
 import RoleTable from "@/components/table/RoleTable";
 
 const prepareAsset = async () => {
-  const data = await fetchData({ path: "/asset", auth: true });
+  const data = await fetchData({ path: "/asset" });
   return data.map((item: any) => {
     return {
       id: item.id,
@@ -25,7 +25,7 @@ const prepareAsset = async () => {
 };
 
 const prepareRequestAsset = async () => {
-  const data = await fetchData({ path: "/request", auth: true });
+  const data = await fetchData({ path: "/request" });
   return data.map((item: any) => {
     return {
       id: item.id,

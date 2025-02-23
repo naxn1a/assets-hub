@@ -37,7 +37,7 @@ export async function POST(req: Request) {
         firstname: body.firstname,
         lastname: body.lastname,
         phone: body.phone,
-        hiredate: body.hiredate,
+        hiredate: new Date(body.hiredate),
         status: body.status,
         department_id: body.department,
         role_id: body.role,

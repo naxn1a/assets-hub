@@ -1,21 +1,21 @@
 import Link from "next/link";
 import Table from "@/components/table/Table";
-import { EmployeeColumns as columns } from "./colums";
+import { UserColumns as columns } from "./colums";
 import { Button } from "@/components/ui/button";
-import { filterEmployee } from "@/utils/data/Employee";
+import { filterUser } from "@/utils/data/User";
 import { fetchData } from "@/utils/FetchData";
+import { formatDate } from "@/utils/Date";
 
-const prepareEmployee = async () => {
-  const data = await fetchData({ path: "/employee", auth: true });
-  return data.map((item: any) => {
+const prepareFetchData = async () => {
+  const res = await fetchData({ path: "/user" });
+  return res.data.map((item: any) => {
     return {
       id: item.id,
-      username: item.username,
       email: item.email,
       firstname: item.firstname,
       lastname: item.lastname,
       phone: item.phone,
-      hiredate: item.hiredate,
+      hiredate: formatDate(item.hiredate),
       status: item.status,
       department: item.department.name,
       role: item.role.name,
@@ -23,28 +23,28 @@ const prepareEmployee = async () => {
   });
 };
 
-export default async function Employees() {
-  const data = await prepareEmployee();
-  const filterDept = filterEmployee(
+export default async function User() {
+  const data = await prepareFetchData();
+  const filterDept = filterUser(
     "department",
-    await fetchData({ path: "/department", auth: true })
+    (await fetchData({ path: "/department" })).data
   );
-  const filterRole = filterEmployee(
+  const filterRole = filterUser(
     "role",
-    await fetchData({ path: "/role", auth: true })
+    (await fetchData({ path: "/role" })).data
   );
 
   const option = {
-    search: ["username"],
+    search: ["email"],
     filters: [filterDept, filterRole],
   };
 
   return (
     <div>
-      <h1 className="text-3xl font-semibold">Employee</h1>
+      <h1 className="text-3xl font-semibold">User</h1>
       <Table columns={columns} data={data} option={option}>
         <div className="flex justify-end">
-          <Link href="/employee/create">
+          <Link href="/user/create">
             <Button>New</Button>
           </Link>
         </div>

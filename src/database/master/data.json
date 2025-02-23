@@ -48,5 +48,13 @@
         "name": "IT Support"
       }
     ]
+  },
+  {
+    "name": "General",
+    "role": [
+      {
+        "name": "Employee"
+      }
+    ]
   }
 ]

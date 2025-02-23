@@ -9,8 +9,8 @@ export default [
   },
   // Hr
   {
-    title: "Employee",
-    url: "/employee",
+    title: "User",
+    url: "/user",
     icon: User,
     role: ["Admin", "Hr"],
   },

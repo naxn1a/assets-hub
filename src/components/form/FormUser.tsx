@@ -7,9 +7,10 @@ import { useForm } from "react-hook-form";
 import ContainerForm from "@/components/form/ContainerForm";
 import { Form, FormField } from "@/components/ui/form";
 import { Button } from "../ui/button";
-import { formSchema, Data as DataValue, Status } from "@/utils/data/Employee";
-import { formatDate } from "@/utils/Date";
+import { formSchema, Data as DataValue, Status } from "@/utils/data/User";
 import { fetchData } from "@/utils/FetchData";
+import { toast } from "@/hooks/use-toast";
+import { redirect } from "next/navigation";
 
 const prepareOptions = (data: any) => {
   return data.map((item: any) => {
@@ -17,7 +18,7 @@ const prepareOptions = (data: any) => {
   });
 };
 
-export default function FormEmployee({
+export default function FormUser({
   back,
   coreData,
   disabled,
@@ -32,21 +33,20 @@ export default function FormEmployee({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: coreData?.username || "",
       email: coreData?.email || "",
       firstname: coreData?.firstname || "",
       lastname: coreData?.lastname || "",
       phone: coreData?.phone || "",
       hiredate: coreData?.hiredate || "",
       status: coreData?.status || "",
-      department: coreData?.department.toString() || "",
-      role: coreData?.role.toString() || "",
+      department: coreData?.department || "",
+      role: coreData?.role || "",
     },
   });
 
   const prepareFetchDepartments = async () => {
-    const data = await fetchData({ path: "/department", auth: true });
-    return data;
+    const res = await fetchData({ path: "/department" });
+    return res.data;
   };
 
   const handleDepartmentChange = (value: string) => {
@@ -83,20 +83,26 @@ export default function FormEmployee({
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const formData = {
       ...values,
-      hiredate: formatDate(values.hiredate),
     };
 
     const data = await fetchData({
-      path: `/employee/${coreData.id ? coreData.id : ""}`,
+      path: `/user/${coreData.id ? coreData.id : ""}`,
       body: formData,
-      auth: true,
     });
 
-    if (data.status === "ok") {
-      alert(data.message);
-    } else {
-      alert(data.message);
+    if (data.status === "error") {
+      return toast({
+        title: "Failed",
+        description: data.message,
+      });
     }
+
+    toast({
+      title: "Success",
+      description: "Data has been saved",
+    });
+
+    redirect("/user");
   };
 
   return (
@@ -104,35 +110,37 @@ export default function FormEmployee({
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="grid grid-cols-2 gap-4 mb-4">
           {DataValue.map((data: any, index: number) => (
-            <FormField
-              key={index}
-              control={form.control}
-              name={data.name}
-              render={({ field }) => {
-                return (
-                  <ContainerForm
-                    field={field}
-                    name={data.name}
-                    placeholder={data.placeholder}
-                    type={data.type}
-                    options={
-                      data.type === "select"
-                        ? prepareOptions(
-                            options?.find((option) => option.name === data.name)
-                              ?.state || []
-                          )
-                        : []
-                    }
-                    onSelected={
-                      data.name === "department"
-                        ? handleDepartmentChange
-                        : undefined
-                    }
-                    disabled={disabled?.includes(data.name)}
-                  />
-                );
-              }}
-            />
+            <section key={index}>
+              <FormField
+                control={form.control}
+                name={data.name}
+                render={({ field }) => {
+                  return (
+                    <ContainerForm
+                      field={field}
+                      name={data.name}
+                      placeholder={data.placeholder}
+                      type={data.type}
+                      options={
+                        data.type === "select"
+                          ? prepareOptions(
+                              options?.find(
+                                (option) => option.name === data.name
+                              )?.state || []
+                            )
+                          : []
+                      }
+                      onSelected={
+                        data.name === "department"
+                          ? handleDepartmentChange
+                          : undefined
+                      }
+                      disabled={disabled?.includes(data.name)}
+                    />
+                  );
+                }}
+              />
+            </section>
           ))}
         </div>
         <div className="my-8 flex gap-4">
