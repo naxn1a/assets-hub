@@ -85,15 +85,15 @@ export default function FormUser({
       ...values,
     };
 
-    const data = await fetchData({
+    const res = await fetchData({
       path: `/user/${coreData.id ? coreData.id : ""}`,
       body: formData,
     });
 
-    if (data.status === "error") {
+    if (res.status === "error") {
       return toast({
         title: "Failed",
-        description: data.message,
+        description: res.message,
       });
     }
 

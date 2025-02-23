@@ -53,11 +53,6 @@ export const Data = [
     type: "text",
   },
   {
-    name: "hiredate",
-    placeholder: "Hire Date",
-    type: "date",
-  },
-  {
     name: "department",
     placeholder: "Department",
     type: "select",
@@ -68,6 +63,11 @@ export const Data = [
     placeholder: "Role",
     type: "select",
     options: [],
+  },
+  {
+    name: "hiredate",
+    placeholder: "Hire Date",
+    type: "date",
   },
   {
     name: "status",

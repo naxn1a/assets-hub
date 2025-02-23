@@ -32,7 +32,7 @@ async function main() {
         firstname: "admin",
         lastname: "admin",
         phone: "00",
-        hiredate: new Date(),
+        hiredate: new Date().toISOString(),
         status: UserStatus.Active,
         department_id: dept!.id,
         role_id: dept?.role.find((r) => r.name === "Admin")?.id || "",

@@ -40,7 +40,7 @@ model User {
   firstname     String
   lastname      String
   phone         String
-  hiredate      DateTime
+  hiredate      String
   status        UserStatus
   department_id String
   department    Department @relation(fields: [department_id], references: [id])
@@ -70,8 +70,8 @@ model Asset {
   lot_number      String
   serial_number   String      @unique
   name            String
-  purchase_date   DateTime
-  warranty_expiry DateTime?
+  purchase_date   String
+  warranty_expiry String?
   status          AssetStatus
   user_id         String?
   user            User?       @relation(fields: [user_id], references: [id])

@@ -47,8 +47,8 @@ export async function POST(req: Request) {
         lot_number: `LOT${y}${m}${c}`,
         serial_number: generateUUIDv4(),
         name: data.name,
-        purchase_date: data.purchase_date,
-        warranty_expiry: data.warranty_expiry || null,
+        purchase_date: data.purchasedate,
+        warranty_expiry: data.warrantyexpiry || "",
         status: AssetStatus.Available,
       });
     }

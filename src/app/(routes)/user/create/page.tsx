@@ -1,5 +1,11 @@
 import FormUser from "@/components/form/FormUser";
 
+const header = {
+  title: "Create User",
+  href: "/user",
+  role: ["HR"],
+};
+
 export default async function UserCreate() {
   const coreData = {
     status: "Active",
@@ -10,8 +16,8 @@ export default async function UserCreate() {
 
   return (
     <section>
-      <h1 className="text-2xl font-semibold mb-4">Create User</h1>
-      <FormUser back="/user" coreData={coreData} disabled={disabled} />
+      <h1 className="text-2xl font-semibold mb-4">{header.title}</h1>
+      <FormUser back={header.href} coreData={coreData} disabled={disabled} />
     </section>
   );
 }

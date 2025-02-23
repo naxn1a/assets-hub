@@ -22,17 +22,17 @@ export default [
     sub: [
       {
         title: "Inventory",
-        url: "/inventory",
+        url: "/asset/inventory",
         role: ["Admin", "It", "Hr"],
       },
       {
         title: "Report",
-        url: "/report",
+        url: "/asset/report",
         role: ["Admin", "It", "Hr"],
       },
       {
         title: "Request",
-        url: "/request",
+        url: "/asset/request",
         role: ["Admin", "It", "Hr"],
       },
     ],

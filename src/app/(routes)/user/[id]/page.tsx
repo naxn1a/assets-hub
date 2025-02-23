@@ -19,6 +19,12 @@ const resetPassword = async (id: string, password: string) => {
   });
 };
 
+const header = {
+  title: "Detail User",
+  href: "/user",
+  role: ["HR"],
+};
+
 export default async function UserDetail({
   params,
 }: {
@@ -27,8 +33,8 @@ export default async function UserDetail({
   const coreData = await prepareUser((await params).id);
   return (
     <section>
-      <h1 className="text-2xl font-semibold mb-4">Detail User</h1>
-      <Form back="/user" coreData={coreData} />
+      <h1 className="text-2xl font-semibold mb-4">{header.title}</h1>
+      <Form back={header.href} coreData={coreData} />
     </section>
   );
 }

@@ -23,6 +23,13 @@ const prepareFetchData = async () => {
   });
 };
 
+const header = {
+  title: "User",
+  href: "/user/create",
+  button: "New User",
+  role: ["HR"],
+};
+
 export default async function User() {
   const data = await prepareFetchData();
   const filterDept = filterUser(
@@ -41,11 +48,11 @@ export default async function User() {
 
   return (
     <div>
-      <h1 className="text-3xl font-semibold">User</h1>
+      <h1 className="text-3xl font-semibold">{header.title}</h1>
       <Table columns={columns} data={data} option={option}>
         <div className="flex justify-end">
-          <Link href="/user/create">
-            <Button>New</Button>
+          <Link href={header.href}>
+            <Button>{header.button}</Button>
           </Link>
         </div>
       </Table>

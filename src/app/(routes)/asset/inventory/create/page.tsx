@@ -5,10 +5,18 @@ import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { formatDate } from "@/utils/Date";
-import MyField from "@/components/Field/MyField";
+import { fetchData } from "@/utils/FetchData";
+import { toast } from "@/hooks/use-toast";
+import { redirect } from "next/navigation";
+import MyField from "@/components/field/MyField";
 
-export default function CreateAsset() {
+const header = {
+  title: "Create Asset",
+  href: "/asset/inventory",
+  role: ["It"],
+};
+
+export default function InventoryCreate() {
   const formSchema = z.object({
     name: z.string().min(2).max(50),
     amount: z
@@ -32,31 +40,28 @@ export default function CreateAsset() {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const formData = {
       ...values,
-      purchase_date: formatDate(values.purchasedate),
-      warranty_expiry: values.warrantyexpiry
-        ? formatDate(values.warrantyexpiry)
-        : null,
     };
 
-    const res = await fetch("/api/asset", {
-      method: "POST",
-      body: JSON.stringify(formData),
-      headers: {
-        "Content-Type": "application/json",
-      },
+    const res = await fetchData({ path: "/asset", body: formData });
+
+    if (res.status === "error") {
+      return toast({
+        title: "Failed",
+        description: res.message,
+      });
+    }
+
+    toast({
+      title: "Success",
+      description: "Asset has been created",
     });
 
-    const data = await res.json();
-
-    if (res.status === 200) {
-      form.reset();
-      alert(data.message);
-    }
+    redirect(header.href);
   };
 
   return (
     <section>
-      <h1 className="text-2xl font-semibold mb-4">Create Asset</h1>
+      <h1 className="text-2xl font-semibold mb-4">{header.title}</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="grid grid-cols-2 gap-4 mb-4">
@@ -81,7 +86,7 @@ export default function CreateAsset() {
             />
           </div>
           <div className="my-8 flex gap-4">
-            <Link href="/asset">
+            <Link href={header.href}>
               <Button variant="secondary">Back</Button>
             </Link>
             <Button type="submit">Submit</Button>
