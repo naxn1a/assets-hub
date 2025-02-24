@@ -102,7 +102,7 @@ export default function FormUser({
       description: "Data has been saved",
     });
 
-    redirect("/user");
+    redirect(back);
   };
 
   return (

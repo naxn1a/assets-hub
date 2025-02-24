@@ -7,6 +7,8 @@ const prepareFetchData = async (id: string) => {
   if (res.status === "error") redirect("/asset");
   return {
     ...res.data,
+    lot: res.data.lot_number,
+    serial: res.data.serial_number,
     purchasedate: res.data.purchase_date,
     warrantyexpiry: res.data.warranty_expiry,
   };

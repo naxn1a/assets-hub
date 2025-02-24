@@ -7,6 +7,9 @@ import ContainerForm from "@/components/form/ContainerForm";
 import { Form, FormField } from "@/components/ui/form";
 import { Button } from "../ui/button";
 import { formSchema, Data as DataValue, Status } from "@/utils/data/Asset";
+import { fetchData } from "@/utils/FetchData";
+import { toast } from "@/hooks/use-toast";
+import { redirect } from "next/navigation";
 
 const prepareOptions = (data: any) => {
   return data.map((item: any) => {
@@ -42,11 +45,29 @@ export default function FormAsset({
     },
   ];
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const formData = {
       ...values,
     };
-    console.log(formData);
+
+    const res = await fetchData({
+      path: `/asset/${coreData.id}`,
+      body: formData,
+    });
+
+    if (res.status === "error") {
+      return toast({
+        title: "Failed",
+        description: res.message,
+      });
+    }
+
+    toast({
+      title: "Success",
+      description: "Data has been updated",
+    });
+
+    redirect(back);
   };
 
   return (
