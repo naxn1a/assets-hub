@@ -9,7 +9,7 @@ interface UserType {
   firstname: string;
   lastname: string;
   phone: string;
-  hiredate: Date;
+  hiredate: string;
   status: UserStatus;
   department_id: string;
   role_id: string;

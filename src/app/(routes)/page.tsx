@@ -11,6 +11,7 @@ export default async function Home() {
   const asset =
     (
       await fetchData({
+        method: "POST",
         path: "/asset/status",
         body: { status: [AssetStatus.Available] },
       })
@@ -18,6 +19,7 @@ export default async function Home() {
   const assigned =
     (
       await fetchData({
+        method: "POST",
         path: "/asset/status",
         body: { status: [AssetStatus.Assigned] },
       })
@@ -25,6 +27,7 @@ export default async function Home() {
   const Maintenance =
     (
       await fetchData({
+        method: "POST",
         path: "/asset/status",
         body: { status: [AssetStatus.Maintenance] },
       })

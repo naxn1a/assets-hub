@@ -49,6 +49,7 @@ model User {
   created_at    DateTime   @default(now())
   updated_at    DateTime   @updatedAt
   asset         Asset[]
+  user          AuditLog[] @relation("User")
   reported_by   AuditLog[] @relation("ReportedBy")
   handled_by    AuditLog[] @relation("HandledBy")
 
@@ -107,6 +108,8 @@ model AuditLog {
   type           AuditLogType
   status         AuditLogStatus
   remark         String?        @default("")
+  user_id        String
+  user           User           @relation("User", fields: [user_id], references: [id])
   reported_by_id String
   reported_by    User           @relation("ReportedBy", fields: [reported_by_id], references: [id])
   handled_by_id  String?

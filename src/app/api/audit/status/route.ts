@@ -5,7 +5,7 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    const assets = await prisma.asset.findMany({
+    const audit = await prisma.auditLog.findMany({
       where: {
         OR: [
           {
@@ -16,16 +16,19 @@ export async function POST(req: Request) {
         ],
       },
       include: {
+        asset: true,
         user: true,
+        reported_by: true,
+        handled_by: true,
       },
       orderBy: {
         created_at: "desc",
       },
     });
 
-    if (!assets) throw new Error("Assets not found");
+    if (!audit) throw new Error("Audit not found");
 
-    return SendHandler(assets);
+    return SendHandler(audit);
   } catch (error) {
     return ErrorHandler(error);
   }

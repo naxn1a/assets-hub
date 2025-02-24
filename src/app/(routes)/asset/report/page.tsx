@@ -1,38 +1,41 @@
 import Table from "@/components/table/Table";
-import { RequestColumns as columns } from "./colums";
+import { ReportColumns as columns } from "./colums";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { fetchData } from "@/utils/FetchData";
 import RoleTable from "@/components/table/RoleTable";
+import { AuditLogStatus } from "@prisma/client";
 
 const prepareFetchData = async () => {
   const res = await fetchData({
-    method: "GET",
-    path: "/audit",
+    method: "POST",
+    path: "/audit/status",
+    body: { status: [AuditLogStatus.Pending] },
   });
 
   if (!res.data) return [];
 
-  return res.data.map((item: any) => ({
-    ...res.data,
-    user: item.user?.email,
-    serial: item.asset?.serial_number,
-    name: item.asset?.name,
-    type: item.type,
-    status: item.status,
-    reported_by: item.reported_by?.email,
-    handled_by: item.handled_by?.email || "-",
-  }));
+  return res.data.map((item: any) => {
+    return {
+      ...res.data,
+      user: item.user?.email,
+      serial: item.asset?.serial_number,
+      name: item.asset?.name,
+      type: item.type,
+      status: item.status,
+      reported_by: item.reported_by?.email,
+    };
+  });
 };
 
 const header = {
-  title: "Request Asset",
-  href: "/asset/request/create",
-  button: "New Request",
+  title: "Report",
+  href: "/asset/inventory/create",
+  button: "New Asset",
   role: ["It"],
 };
 
-export default async function Request() {
+export default async function Report() {
   const data = await prepareFetchData();
 
   const option = {

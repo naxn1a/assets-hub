@@ -2,15 +2,15 @@
 import { ErrorHandler } from "./ErrorHandler";
 
 interface FetchDataProps {
+  method?: "GET" | "POST";
   path: string;
   body?: any;
-  auth?: boolean;
 }
 
-export const fetchData = async ({ path, body }: FetchDataProps) => {
+export const fetchData = async ({ method, path, body }: FetchDataProps) => {
   try {
     const res = await fetch(`${process.env.API_URL}/api${path}`, {
-      method: body ? "POST" : "GET",
+      method: method || "GET",
       headers: {
         "Content-Type": "application/json",
       },

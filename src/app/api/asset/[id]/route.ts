@@ -34,10 +34,7 @@ export async function POST(
       where: {
         id: (await params).id,
       },
-      data: {
-        warranty_expiry: body.warrantyexpiry,
-        status: body.status,
-      },
+      data: body,
     });
 
     if (!asset) throw new Error("Asset not found");

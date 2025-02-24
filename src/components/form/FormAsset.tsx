@@ -52,7 +52,10 @@ export default function FormAsset({
 
     const res = await fetchData({
       path: `/asset/${coreData.id}`,
-      body: formData,
+      body: {
+        warranty_expiry: formData.warrantyexpiry,
+        status: formData.status,
+      },
     });
 
     if (res.status === "error") {

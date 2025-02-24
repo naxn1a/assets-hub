@@ -42,7 +42,11 @@ export default function InventoryCreate() {
       ...values,
     };
 
-    const res = await fetchData({ path: "/asset", body: formData });
+    const res = await fetchData({
+      method: "POST",
+      path: "/asset",
+      body: formData,
+    });
 
     if (res.status === "error") {
       return toast({

@@ -29,7 +29,7 @@ const header = {
   role: ["It"],
 };
 
-export default async function Asset() {
+export default async function Inventory() {
   const data = await prepareFetchData();
 
   const option = {

@@ -6,6 +6,7 @@ export async function GET() {
   const audit = await prisma.auditLog.findMany({
     include: {
       asset: true,
+      user: true,
       reported_by: true,
       handled_by: true,
     },
@@ -29,6 +30,7 @@ export async function POST(req: Request) {
       const created = await tx.auditLog.create({
         data: {
           asset_id: body.asset_id,
+          user_id: session?.user?.email!,
           reported_by_id: body.reported_by_id,
           handled_by_id: handled_by.id,
           status: body.status,
