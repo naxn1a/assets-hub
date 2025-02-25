@@ -1,4 +1,3 @@
-"use server";
 import { ErrorHandler } from "./ErrorHandler";
 
 interface FetchDataProps {

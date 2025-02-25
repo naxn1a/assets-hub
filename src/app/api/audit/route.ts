@@ -1,5 +1,6 @@
 import prisma from "@/database";
 import { ErrorHandler, SendHandler } from "@/utils/ErrorHandler";
+import { AuditLogStatus, AuditLogType } from "@prisma/client";
 import { getServerSession } from "next-auth";
 
 export async function GET() {
@@ -20,26 +21,26 @@ export async function POST(req: Request) {
     const body = await req.json();
     const session = await getServerSession();
 
+    if (!session) throw new Error("Unauthorized");
+
     const result = await prisma.$transaction(async (tx) => {
-      const handled_by = await tx.user.findUnique({
+      const reported_by = await tx.user.findUnique({
         where: { email: session?.user?.email ?? undefined },
       });
 
-      if (!handled_by) throw new Error("Handler not found");
+      if (!reported_by) throw new Error("Reported not found");
 
       const created = await tx.auditLog.create({
         data: {
-          asset_id: body.asset_id,
-          user_id: session?.user?.email!,
-          reported_by_id: body.reported_by_id,
-          handled_by_id: handled_by.id,
-          status: body.status,
-          type: body.type,
-          remark: body.remark,
+          ...body,
+          reported_by_id: reported_by.id,
+          status: AuditLogStatus.Pending,
+          type: AuditLogType.Assignment,
+          remark: "",
         },
       });
 
-      if (!created) throw new Error("Failed to create history");
+      if (!created) throw new Error("Failed to create audit log");
 
       return created;
     });

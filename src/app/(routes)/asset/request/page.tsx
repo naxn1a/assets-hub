@@ -14,7 +14,7 @@ const prepareFetchData = async () => {
   if (!res.data) return [];
 
   return res.data.map((item: any) => ({
-    ...res.data,
+    id: item.id,
     user: item.user?.email,
     serial: item.asset?.serial_number,
     name: item.asset?.name,

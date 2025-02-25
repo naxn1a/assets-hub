@@ -8,21 +8,27 @@ import { z } from "zod";
 import MyField from "@/components/field/MyField";
 import { useEffect, useState } from "react";
 import { redirect } from "next/navigation";
+import { fetchData } from "@/utils/FetchData";
+import { AssetStatus } from "@prisma/client";
+import { toast } from "@/hooks/use-toast";
 
-const prepareFetchEmployees = async () => {
-  const res = await fetch("http://localhost:3000/api/employee");
-  const data = await res.json();
-  return data.map((item: any) => {
+const prepareFetchUser = async () => {
+  const res = await fetchData({ method: "GET", path: "/user" });
+  if (!res.data) return [];
+  return res.data.map((item: any) => {
     return { value: item.id, label: item.email };
   });
 };
 
 const prepareFetchAssets = async () => {
-  const res = await fetch("http://localhost:3000/api/asset/available");
-  const data = await res.json();
-
+  const res = await fetchData({
+    method: "POST",
+    path: "/asset/status",
+    body: { status: [AssetStatus.Available] },
+  });
+  if (!res.data) return [];
   const uniqueNames = new Set();
-  const removeDup = data.filter((item: any) => {
+  const removeDup = res.data.filter((item: any) => {
     if (!uniqueNames.has(item.name)) {
       uniqueNames.add(item.name);
       return true;
@@ -35,19 +41,25 @@ const prepareFetchAssets = async () => {
   });
 };
 
+const header = {
+  title: "Request Asset Create",
+  href: "/asset/request",
+  role: ["It"],
+};
+
 export default function RequestAsset() {
-  const [employees, setEmployees] = useState([]);
+  const [user, setUser] = useState([]);
   const [assets, setAssets] = useState([]);
 
   const formSchema = z.object({
-    employee: z.string().nonempty({ message: "Employee is required" }),
+    user: z.string().nonempty({ message: "User is required" }),
     asset: z.string().nonempty({ message: "Asset is required" }),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      employee: "",
+      user: "",
       asset: "",
     },
   });
@@ -57,25 +69,33 @@ export default function RequestAsset() {
       ...values,
     };
 
-    const res = await fetch("/api/request", {
+    const res = await fetchData({
       method: "POST",
-      body: JSON.stringify(formData),
-      headers: {
-        "Content-Type": "application/json",
+      path: "/audit",
+      body: {
+        asset_id: formData.asset,
+        user_id: formData.user,
       },
     });
 
-    if (res.ok) {
-      alert("Request submitted successfully");
-      redirect("/asset");
-    } else {
-      alert("Failed to submit request");
+    if (res.status === "error") {
+      return toast({
+        title: "Failed",
+        description: res.message,
+      });
     }
+
+    toast({
+      title: "Success",
+      description: "Data has been saved",
+    });
+
+    redirect(header.href);
   };
 
   useEffect(() => {
-    prepareFetchEmployees().then((data) => {
-      setEmployees(data);
+    prepareFetchUser().then((data) => {
+      setUser(data);
     });
     prepareFetchAssets().then((data) => {
       setAssets(data);
@@ -84,16 +104,16 @@ export default function RequestAsset() {
 
   return (
     <section>
-      <h1 className="text-2xl font-semibold mb-4">Request Asset</h1>
+      <h1 className="text-3xl font-semibold mb-4">{header.title}</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="grid grid-cols-2 gap-4 mb-4">
             <MyField
               form={form}
-              name="employee"
-              placeholder="Employee"
+              name="user"
+              placeholder="User"
               type="select"
-              options={employees}
+              options={user}
             />
             <MyField
               form={form}
@@ -104,7 +124,7 @@ export default function RequestAsset() {
             />
           </div>
           <div className="my-8 flex gap-4">
-            <Link href="/asset">
+            <Link href={header.href}>
               <Button variant="secondary">Back</Button>
             </Link>
             <Button type="submit">Submit</Button>
