@@ -1,7 +1,5 @@
 import Table from "@/components/table/Table";
 import { ReportColumns as columns } from "./colums";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { fetchData } from "@/utils/FetchData";
 import RoleTable from "@/components/table/RoleTable";
 import { AuditLogStatus } from "@prisma/client";
@@ -46,13 +44,7 @@ export default async function Report() {
     <div className="flex flex-col gap-8 mb-8">
       <RoleTable role="It">
         <h1 className="text-3xl font-semibold">{header.title}</h1>
-        <Table columns={columns} data={data} option={option}>
-          <div className="flex justify-end">
-            <Link href={header.href}>
-              <Button>{header.button}</Button>
-            </Link>
-          </div>
-        </Table>
+        <Table columns={columns} data={data} option={option}></Table>
       </RoleTable>
     </div>
   );

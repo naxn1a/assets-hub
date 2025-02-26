@@ -5,6 +5,7 @@ import TableColumnHeader from "@/components/table/TableColumnHeader";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -12,6 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { handleApprove, handleReject } from "./_actions";
+import { AuditLogStatus } from "@/utils/color/AuditColor";
 
 export const ReportColumns: ColumnDef<any>[] = [
   {
@@ -39,6 +41,19 @@ export const ReportColumns: ColumnDef<any>[] = [
     header: ({ column }) => (
       <TableColumnHeader column={column} title="Status" />
     ),
+    cell: ({ row }) => {
+      const data = row.original;
+
+      return (
+        <div
+          className={`px-2 py-1 rounded-full w-fit ${AuditLogStatus(
+            data.status
+          )}`}
+        >
+          {data.status}
+        </div>
+      );
+    },
   },
   {
     accessorKey: "reported_by",
@@ -61,6 +76,7 @@ export const ReportColumns: ColumnDef<any>[] = [
             <DialogHeader>
               <DialogTitle>Do you want to approve it?</DialogTitle>
             </DialogHeader>
+            <DialogDescription></DialogDescription>
             <DialogFooter>
               <Button onClick={() => handleApprove(data.id)} variant="default">
                 Yes

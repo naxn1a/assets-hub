@@ -6,6 +6,7 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -13,8 +14,8 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { handleCancel } from "./_actions";
-import { AuditLogStatus } from "@prisma/client";
-import { AuditStatusColor } from "@/utils/AuditStatusColor";
+import { AuditLogStatus as s } from "@prisma/client";
+import { AuditLogStatus } from "@/utils/color/AuditColor";
 
 export const RequestColumns: ColumnDef<any>[] = [
   {
@@ -47,7 +48,7 @@ export const RequestColumns: ColumnDef<any>[] = [
 
       return (
         <div
-          className={`px-2 py-1 rounded-full w-fit ${AuditStatusColor(
+          className={`px-2 py-1 rounded-full w-fit ${AuditLogStatus(
             data.status
           )}`}
         >
@@ -73,7 +74,7 @@ export const RequestColumns: ColumnDef<any>[] = [
     cell: ({ row }) => {
       const data = row.original;
 
-      return data.status === AuditLogStatus.Pending ? (
+      return data.status === s.Pending ? (
         <Dialog>
           <DialogTrigger asChild>
             <button>
@@ -84,6 +85,7 @@ export const RequestColumns: ColumnDef<any>[] = [
             <DialogHeader>
               <DialogTitle>Do you want to cancel it?</DialogTitle>
             </DialogHeader>
+            <DialogDescription></DialogDescription>
             <DialogFooter>
               <Button onClick={() => handleCancel(data.id)} variant="default">
                 Yes
