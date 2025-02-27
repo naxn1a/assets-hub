@@ -22,6 +22,8 @@ const prepareFetchData = async () => {
       type: item.type,
       status: item.status,
       reported_by: item.reported_by?.email,
+      asset_id: item.asset_id,
+      user_id: item.user_id,
     };
   });
 };

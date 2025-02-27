@@ -69,10 +69,10 @@ export const ManagementColumns: ColumnDef<any>[] = [
             </DialogHeader>
             <DialogDescription></DialogDescription>
             <DialogFooter>
-              <Button onClick={() => handleApprove(data.id)} variant="default">
+              <Button onClick={() => handleApprove(data)} variant="default">
                 Yes
               </Button>
-              <Button onClick={() => handleReject(data.id)} variant="secondary">
+              <Button onClick={() => handleReject(data)} variant="secondary">
                 No
               </Button>
             </DialogFooter>

@@ -12,13 +12,13 @@ export async function PUT(
     const user = await UserSession();
     if (!user) throw new Error("Unauthorized");
 
-    const result = await prisma.auditLog.update({
+    const result = await prisma.asset.update({
       where: {
         id: (await params).id,
       },
       data: {
         status: body.status,
-        handled_by_id: user.id,
+        user_id: body.user_id,
       },
     });
 
