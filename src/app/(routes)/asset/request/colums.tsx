@@ -15,7 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { handleCancel } from "./_actions";
 import { AuditLogStatus as s } from "@prisma/client";
-import { AuditLogStatus } from "@/utils/color/AuditColor";
+import TextColor from "@/components/table/TextColor";
 
 export const RequestColumns: ColumnDef<any>[] = [
   {
@@ -45,16 +45,7 @@ export const RequestColumns: ColumnDef<any>[] = [
     ),
     cell: ({ row }) => {
       const data = row.original;
-
-      return (
-        <div
-          className={`px-2 py-1 rounded-full w-fit ${AuditLogStatus(
-            data.status
-          )}`}
-        >
-          {data.status}
-        </div>
-      );
+      return <TextColor status={data.status} />;
     },
   },
   {

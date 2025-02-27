@@ -3,7 +3,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { LucideEdit } from "lucide-react";
 import TableColumnHeader from "@/components/table/TableColumnHeader";
 import Link from "next/link";
-import { AssetStatus } from "@/utils/color/AssetColor";
+import TextColor from "@/components/table/TextColor";
 
 export const InventoryColumns: ColumnDef<any>[] = [
   {
@@ -39,14 +39,7 @@ export const InventoryColumns: ColumnDef<any>[] = [
     ),
     cell: ({ row }) => {
       const data = row.original;
-
-      return (
-        <div
-          className={`px-2 py-1 rounded-full w-fit ${AssetStatus(data.status)}`}
-        >
-          {data.status}
-        </div>
-      );
+      return <TextColor status={data.status} />;
     },
   },
   {
