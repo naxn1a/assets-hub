@@ -5,7 +5,7 @@ import TableColumnHeader from "@/components/table/TableColumnHeader";
 import Link from "next/link";
 import TextColor from "@/components/table/TextColor";
 
-export const InventoryColumns: ColumnDef<any>[] = [
+export const Columns: ColumnDef<any>[] = [
   {
     accessorKey: "lot",
     header: ({ column }) => <TableColumnHeader column={column} title="Lot" />,
@@ -51,7 +51,7 @@ export const InventoryColumns: ColumnDef<any>[] = [
     cell: ({ row }) => {
       const data = row.original;
       return (
-        <Link href={`/asset/inventory/${data.id}`}>
+        <Link href={`/warehouse/asset/${data.id}`}>
           <LucideEdit className="h-4 w-4" />
         </Link>
       );

@@ -1,5 +1,5 @@
 import Table from "@/components/table/Table";
-import { ReportColumns as columns } from "./colums";
+import { ManagementColumns as columns } from "./colums";
 import { fetchData } from "@/utils/FetchData";
 import DeptTable from "@/components/table/DeptTable";
 import { AuditLogStatus } from "@prisma/client";
@@ -26,16 +26,7 @@ const prepareFetchData = async () => {
   });
 };
 
-const header = {
-  title: "Report",
-  href: "/asset/inventory/create",
-  dept: ["Information Technology"],
-  options: {
-    search: ["user"],
-  },
-};
-
-export default async function Report() {
+export default async function Management() {
   const data = await prepareFetchData();
 
   return (
@@ -47,3 +38,11 @@ export default async function Report() {
     </div>
   );
 }
+
+const header = {
+  title: "Management",
+  dept: ["Information Technology"],
+  options: {
+    search: ["user"],
+  },
+};

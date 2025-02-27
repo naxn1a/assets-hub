@@ -1,5 +1,5 @@
 import Table from "@/components/table/Table";
-import { InventoryColumns as columns } from "./colums";
+import { Columns } from "./colums";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { fetchData } from "@/utils/FetchData";
@@ -8,7 +8,9 @@ import { formatDate } from "@/utils/Date";
 
 const prepareFetchData = async () => {
   const res = await fetchData({ path: "/asset" });
+
   if (!res.data) return [];
+
   return res.data.map((item: any) => {
     return {
       id: item.id,
@@ -23,24 +25,14 @@ const prepareFetchData = async () => {
   });
 };
 
-const header = {
-  title: "Inventory",
-  href: "/asset/inventory/create",
-  button: "New Asset",
-  dept: ["Information Technology"],
-  options: {
-    search: ["user"],
-  },
-};
-
-export default async function Inventory() {
+export default async function Asset() {
   const data = await prepareFetchData();
 
   return (
     <div className="flex flex-col gap-8 mb-8">
       <DeptTable dept={header.dept}>
         <h1 className="text-3xl font-semibold">{header.title}</h1>
-        <Table columns={columns} data={data} option={header.options}>
+        <Table columns={Columns} data={data} option={header.options}>
           <div className="flex justify-end">
             <Link href={header.href}>
               <Button>{header.button}</Button>
@@ -51,3 +43,13 @@ export default async function Inventory() {
     </div>
   );
 }
+
+const header = {
+  title: "Asset",
+  href: "/warehouse/asset/create",
+  button: "New Asset",
+  dept: ["Information Technology"],
+  options: {
+    search: ["user"],
+  },
+};

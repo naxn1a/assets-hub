@@ -1,11 +1,10 @@
 import Table from "@/components/table/Table";
-import { HistoryColumns as columns } from "./columns";
+import { Columns } from "./columns";
 import DeptTable from "@/components/table/DeptTable";
 import { fetchData } from "@/utils/FetchData";
 
 const prepareFetchData = async () => {
   const res = await fetchData({
-    method: "GET",
     path: "/audit",
   });
 
@@ -23,14 +22,6 @@ const prepareFetchData = async () => {
   }));
 };
 
-const header = {
-  title: "History",
-  dept: ["Accounting"],
-  options: {
-    search: ["user"],
-  },
-};
-
 export default async function History() {
   const data = await prepareFetchData();
 
@@ -38,8 +29,16 @@ export default async function History() {
     <div className="flex flex-col gap-8 mb-8">
       <DeptTable dept={header.dept}>
         <h1 className="text-3xl font-semibold">{header.title}</h1>
-        <Table columns={columns} data={data} option={header.options}></Table>
+        <Table columns={Columns} data={data} option={header.options}></Table>
       </DeptTable>
     </div>
   );
 }
+
+const header = {
+  title: "History",
+  dept: ["Accounting"],
+  options: {
+    search: ["user"],
+  },
+};

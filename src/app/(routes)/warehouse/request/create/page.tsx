@@ -9,7 +9,7 @@ import MyField from "@/components/field/MyField";
 import { useEffect, useState } from "react";
 import { redirect } from "next/navigation";
 import { fetchData } from "@/utils/FetchData";
-import { AssetStatus } from "@prisma/client";
+import { AssetStatus, AuditLogType } from "@prisma/client";
 import { toast } from "@/hooks/use-toast";
 
 const prepareFetchUser = async () => {
@@ -41,13 +41,7 @@ const prepareFetchAssets = async () => {
   });
 };
 
-const header = {
-  title: "Request Asset Create",
-  href: "/asset/request",
-  role: ["It"],
-};
-
-export default function RequestAsset() {
+export default function RequestCreate() {
   const [user, setUser] = useState([]);
   const [assets, setAssets] = useState([]);
 
@@ -75,6 +69,7 @@ export default function RequestAsset() {
       body: {
         asset_id: formData.asset,
         user_id: formData.user,
+        type: AuditLogType.Assignment,
       },
     });
 
@@ -134,3 +129,9 @@ export default function RequestAsset() {
     </section>
   );
 }
+
+const header = {
+  title: "Request Asset Create",
+  href: "/warehouse/request",
+  role: ["Information Technology"],
+};

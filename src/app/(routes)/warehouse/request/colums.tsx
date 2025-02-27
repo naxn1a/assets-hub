@@ -17,7 +17,7 @@ import { handleCancel } from "./_actions";
 import { AuditLogStatus as s } from "@prisma/client";
 import TextColor from "@/components/table/TextColor";
 
-export const RequestColumns: ColumnDef<any>[] = [
+export const Columns: ColumnDef<any>[] = [
   {
     accessorKey: "user",
     header: ({ column }) => <TableColumnHeader column={column} title="User" />,

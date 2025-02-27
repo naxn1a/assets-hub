@@ -4,7 +4,7 @@ import { generateUUIDv4 } from "@/utils/GenerateUUID";
 import { ErrorHandler, SendHandler } from "@/utils/ErrorHandler";
 
 export async function GET() {
-  const asset = await prisma.asset.findMany({
+  const result = await prisma.asset.findMany({
     include: {
       user: true,
     },
@@ -13,7 +13,7 @@ export async function GET() {
     },
   });
 
-  return SendHandler(asset);
+  return SendHandler(result);
 }
 
 export async function POST(req: Request) {
@@ -21,7 +21,7 @@ export async function POST(req: Request) {
   let lotRecord = 1;
 
   try {
-    const data = await req.json();
+    const body = await req.json();
 
     const now = new Date();
     const currentYear = now.getFullYear();
@@ -42,13 +42,13 @@ export async function POST(req: Request) {
     const m = `${currentMonth}`.padStart(2, "0");
     const c = `${lotRecord}`.padStart(3, "0");
 
-    for (let i = 0; i < data.amount; i++) {
+    for (let i = 0; i < body.amount; i++) {
       temp.push({
         lot_number: `LOT${y}${m}${c}`,
         serial_number: generateUUIDv4(),
-        name: data.name,
-        purchase_date: data.purchasedate,
-        warranty_expiry: data.warrantyexpiry || "",
+        name: body.name,
+        purchase_date: body.purchase_date,
+        warranty_expiry: body.warranty_expiry || "",
         status: AssetStatus.Available,
       });
     }

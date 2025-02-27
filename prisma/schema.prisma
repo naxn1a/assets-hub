@@ -97,6 +97,7 @@ enum AuditLogStatus {
   Pending // กำลังรอการดำเนินการ
   Approved // ได้รับการอนุมัติแล้ว
   Rejected // ถูกปฏิเสธ
+  InProgress // กำลังดำเนินการ
   Completed // เสร็จสิ้น
   Cancelled // ถูกยกเลิก
 }
@@ -110,8 +111,8 @@ model AuditLog {
   remark         String?        @default("")
   user_id        String
   user           User           @relation("User", fields: [user_id], references: [id])
-  reported_by_id String
-  reported_by    User           @relation("ReportedBy", fields: [reported_by_id], references: [id])
+  reported_by_id String?
+  reported_by    User?          @relation("ReportedBy", fields: [reported_by_id], references: [id])
   handled_by_id  String?
   handled_by     User?          @relation("HandledBy", fields: [handled_by_id], references: [id])
   created_at     DateTime       @default(now())

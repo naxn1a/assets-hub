@@ -3,7 +3,7 @@ import { hashPassword } from "@/utils/auth/Hash";
 import { ErrorHandler, SendHandler } from "@/utils/ErrorHandler";
 
 export async function GET() {
-  const user = await prisma.user.findMany({
+  const result = await prisma.user.findMany({
     include: {
       department: true,
       role: true,
@@ -13,7 +13,7 @@ export async function GET() {
     },
   });
 
-  return SendHandler(user);
+  return SendHandler(result);
 }
 
 export async function POST(req: Request) {
@@ -30,7 +30,7 @@ export async function POST(req: Request) {
 
     const password = `${body.firstname}.${body.lastname.slice(0, 2)}`;
 
-    const user = await prisma.user.create({
+    const result = await prisma.user.create({
       data: {
         email: body.email,
         password: await hashPassword(password),
@@ -44,7 +44,9 @@ export async function POST(req: Request) {
       },
     });
 
-    return SendHandler(user);
+    if (!result) throw new Error("Failed to create user");
+
+    return SendHandler(result);
   } catch (error) {
     return ErrorHandler(error);
   }

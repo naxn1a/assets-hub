@@ -1,0 +1,99 @@
+"use client";
+import { ColumnDef } from "@tanstack/react-table";
+import { LucideEdit } from "lucide-react";
+import TableColumnHeader from "@/components/table/TableColumnHeader";
+import TextColor from "@/components/table/TextColor";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { handleSubmit } from "./_actions";
+import { AssetStatus as s } from "@prisma/client";
+
+export const Columns: ColumnDef<any>[] = [
+  {
+    accessorKey: "lot",
+    header: ({ column }) => <TableColumnHeader column={column} title="Lot" />,
+  },
+  {
+    accessorKey: "serial",
+    header: ({ column }) => (
+      <TableColumnHeader column={column} title="Serial" />
+    ),
+  },
+  {
+    accessorKey: "name",
+    header: ({ column }) => <TableColumnHeader column={column} title="Name" />,
+  },
+  {
+    accessorKey: "warrantyexpiry",
+    header: ({ column }) => (
+      <TableColumnHeader column={column} title="Warranty Expiry" />
+    ),
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => (
+      <TableColumnHeader column={column} title="Status" />
+    ),
+    cell: ({ row }) => {
+      const data = row.original;
+      return <TextColor status={data.status} />;
+    },
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      const data = row.original;
+      const [status, setStatus] = useState("");
+
+      return (
+        <Dialog>
+          <DialogTrigger asChild>
+            <button>
+              <LucideEdit className="h-4 w-4" />
+            </button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>What do you want to do?</DialogTitle>
+            </DialogHeader>
+            <DialogDescription></DialogDescription>
+            <DialogFooter>
+              <Select onValueChange={setStatus}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value={s.Maintenance}>Repair</SelectItem>
+                  <SelectItem value={s.Returned}>Return</SelectItem>
+                </SelectContent>
+              </Select>
+              <Button
+                onClick={() => handleSubmit(data, status)}
+                variant={status ? "default" : "secondary"}
+                className={status ? "" : "cursor-not-allowed"}
+              >
+                Submit
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      );
+    },
+  },
+];

@@ -20,7 +20,7 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const user = await prisma.user.findUnique({
+    const result = await prisma.user.findUnique({
       where: {
         id: (await params).id,
       },
@@ -30,15 +30,15 @@ export async function GET(
       },
     });
 
-    if (!user) throw new Error("User not found");
+    if (!result) throw new Error("User not found");
 
-    return SendHandler(user);
+    return SendHandler(result);
   } catch (error) {
     return ErrorHandler(error);
   }
 }
 
-export async function POST(
+export async function PUT(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
@@ -58,14 +58,16 @@ export async function POST(
 
     if (body.password) temp.password = await hashPassword(body.password);
 
-    const user = await prisma.user.update({
+    const result = await prisma.user.update({
       where: {
         id: (await params).id,
       },
       data: temp,
     });
 
-    return SendHandler(user);
+    if (!result) throw new Error("Failed to update user");
+
+    return SendHandler(result);
   } catch (error) {
     return ErrorHandler(error);
   }

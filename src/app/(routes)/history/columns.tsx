@@ -3,7 +3,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import TableColumnHeader from "@/components/table/TableColumnHeader";
 import TextColor from "@/components/table/TextColor";
 
-export const HistoryColumns: ColumnDef<any>[] = [
+export const Columns: ColumnDef<any>[] = [
   {
     accessorKey: "user",
     header: ({ column }) => <TableColumnHeader column={column} title="User" />,

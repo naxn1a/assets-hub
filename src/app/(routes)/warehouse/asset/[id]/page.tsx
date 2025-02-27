@@ -1,4 +1,5 @@
 import Form from "@/components/form/FormAsset";
+import DeptTable from "@/components/table/DeptTable";
 import { fetchData } from "@/utils/FetchData";
 import { redirect } from "next/navigation";
 
@@ -14,23 +15,24 @@ const prepareFetchData = async (id: string) => {
   };
 };
 
-const header = {
-  title: "Detail Asset",
-  href: "/asset/inventory",
-  role: ["It"],
-};
-
-export default async function DetailAsset({
+export default async function AssetDetail({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
   const coreData = await prepareFetchData((await params).id);
-  const disabled = ["lot", "serial", "name", "purchasedate"];
+
   return (
-    <section>
+    <DeptTable dept={header.dept}>
       <h1 className="text-2xl font-semibold mb-4">{header.title}</h1>
-      <Form back={header.href} coreData={coreData} disabled={disabled} />
-    </section>
+      <Form back={header.href} coreData={coreData} disabled={header.disabled} />
+    </DeptTable>
   );
 }
+
+const header = {
+  title: "Asset Detail",
+  href: "/warehouse/asset",
+  dept: ["Information Technology"],
+  disabled: ["lot", "serial", "name", "purchasedate"],
+};

@@ -86,8 +86,8 @@ export default function FormUser({
     };
 
     const res = await fetchData({
-      method: "POST",
-      path: `/user/${coreData.id ? coreData.id : ""}`,
+      method: coreData.id ? "PUT" : "POST",
+      path: `/user/${coreData.id || ""}`,
       body: formData,
     });
 

@@ -9,14 +9,9 @@ import { fetchData } from "@/utils/FetchData";
 import { toast } from "@/hooks/use-toast";
 import { redirect } from "next/navigation";
 import MyField from "@/components/field/MyField";
+import DeptTable from "@/components/table/DeptTable";
 
-const header = {
-  title: "Create Asset",
-  href: "/asset/inventory",
-  role: ["It"],
-};
-
-export default function InventoryCreate() {
+export default function AssetCreate() {
   const formSchema = z.object({
     name: z.string().min(2).max(50),
     amount: z
@@ -45,7 +40,12 @@ export default function InventoryCreate() {
     const res = await fetchData({
       method: "POST",
       path: "/asset",
-      body: formData,
+      body: {
+        name: formData.name,
+        purchase_date: formData.purchasedate,
+        warranty_expiry: formData.warrantyexpiry,
+        amount: formData.amount,
+      },
     });
 
     if (res.status === "error") {
@@ -64,7 +64,7 @@ export default function InventoryCreate() {
   };
 
   return (
-    <section>
+    <DeptTable dept={header.dept}>
       <h1 className="text-2xl font-semibold mb-4">{header.title}</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -97,6 +97,12 @@ export default function InventoryCreate() {
           </div>
         </form>
       </Form>
-    </section>
+    </DeptTable>
   );
 }
+
+const header = {
+  title: "Create Asset",
+  href: "/warehouse/asset",
+  dept: ["Information Technology"],
+};

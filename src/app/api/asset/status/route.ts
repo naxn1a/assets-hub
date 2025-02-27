@@ -5,7 +5,7 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    const assets = await prisma.asset.findMany({
+    const result = await prisma.asset.findMany({
       where: {
         OR: [
           {
@@ -23,9 +23,9 @@ export async function POST(req: Request) {
       },
     });
 
-    if (!assets) throw new Error("Assets not found");
+    if (!result) throw new Error("Assets not found");
 
-    return SendHandler(assets);
+    return SendHandler(result);
   } catch (error) {
     return ErrorHandler(error);
   }

@@ -1,4 +1,5 @@
 import Form from "@/components/form/FormUser";
+import DeptTable from "@/components/table/DeptTable";
 import { fetchData } from "@/utils/FetchData";
 import { redirect } from "next/navigation";
 
@@ -19,22 +20,23 @@ const resetPassword = async (id: string, password: string) => {
   });
 };
 
-const header = {
-  title: "Detail User",
-  href: "/user",
-  role: ["HR"],
-};
-
 export default async function UserDetail({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const coreData = await prepareUser((await params).id);
+  const data = await prepareUser((await params).id);
+
   return (
-    <section>
+    <DeptTable dept={header.dept}>
       <h1 className="text-2xl font-semibold mb-4">{header.title}</h1>
-      <Form back={header.href} coreData={coreData} />
-    </section>
+      <Form back={header.href} coreData={data} />
+    </DeptTable>
   );
 }
+
+const header = {
+  title: "Detail User",
+  href: "/user",
+  dept: ["Human resource"],
+};

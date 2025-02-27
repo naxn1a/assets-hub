@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { handleApprove, handleReject } from "./_actions";
 import TextColor from "@/components/table/TextColor";
 
-export const ReportColumns: ColumnDef<any>[] = [
+export const ManagementColumns: ColumnDef<any>[] = [
   {
     accessorKey: "user",
     header: ({ column }) => <TableColumnHeader column={column} title="User" />,

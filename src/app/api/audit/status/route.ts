@@ -5,7 +5,7 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    const audit = await prisma.auditLog.findMany({
+    const result = await prisma.auditLog.findMany({
       where: {
         OR: [
           {
@@ -26,9 +26,9 @@ export async function POST(req: Request) {
       },
     });
 
-    if (!audit) throw new Error("Audit not found");
+    if (!result) throw new Error("Audit not found");
 
-    return SendHandler(audit);
+    return SendHandler(result);
   } catch (error) {
     return ErrorHandler(error);
   }

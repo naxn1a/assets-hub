@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { filterUser } from "@/utils/data/User";
 import { fetchData } from "@/utils/FetchData";
 import { formatDate } from "@/utils/Date";
+import DeptTable from "@/components/table/DeptTable";
 
 const prepareFetchData = async () => {
   const res = await fetchData({ path: "/user" });
@@ -24,13 +25,6 @@ const prepareFetchData = async () => {
   });
 };
 
-const header = {
-  title: "User",
-  href: "/user/create",
-  button: "New User",
-  role: ["HR"],
-};
-
 export default async function User() {
   const data = await prepareFetchData();
   const filterDept = filterUser(
@@ -42,21 +36,28 @@ export default async function User() {
     (await fetchData({ path: "/role" })).data
   );
 
-  const option = {
+  const options = {
     search: ["email"],
     filters: [filterDept, filterRole],
   };
 
   return (
-    <div>
+    <DeptTable dept={header.dept}>
       <h1 className="text-3xl font-semibold">{header.title}</h1>
-      <Table columns={columns} data={data} option={option}>
+      <Table columns={columns} data={data} option={options}>
         <div className="flex justify-end">
           <Link href={header.href}>
             <Button>{header.button}</Button>
           </Link>
         </div>
       </Table>
-    </div>
+    </DeptTable>
   );
 }
+
+const header = {
+  title: "User",
+  href: "/user/create",
+  button: "New User",
+  dept: ["Human resource"],
+};

@@ -51,6 +51,7 @@ export default function FormAsset({
     };
 
     const res = await fetchData({
+      method: "PUT",
       path: `/asset/${coreData.id}`,
       body: {
         warranty_expiry: formData.warrantyexpiry,
