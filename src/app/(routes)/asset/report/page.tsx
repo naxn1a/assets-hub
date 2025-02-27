@@ -1,7 +1,7 @@
 import Table from "@/components/table/Table";
 import { ReportColumns as columns } from "./colums";
 import { fetchData } from "@/utils/FetchData";
-import RoleTable from "@/components/table/RoleTable";
+import DeptTable from "@/components/table/DeptTable";
 import { AuditLogStatus } from "@prisma/client";
 
 const prepareFetchData = async () => {
@@ -15,7 +15,7 @@ const prepareFetchData = async () => {
 
   return res.data.map((item: any) => {
     return {
-      ...res.data,
+      id: item.id,
       user: item.user?.email,
       serial: item.asset?.serial_number,
       name: item.asset?.name,
@@ -29,23 +29,21 @@ const prepareFetchData = async () => {
 const header = {
   title: "Report",
   href: "/asset/inventory/create",
-  button: "New Asset",
-  role: ["It"],
+  dept: ["Information Technology"],
+  options: {
+    search: ["user"],
+  },
 };
 
 export default async function Report() {
   const data = await prepareFetchData();
 
-  const option = {
-    search: ["serial", "name"],
-  };
-
   return (
     <div className="flex flex-col gap-8 mb-8">
-      <RoleTable role="It">
+      <DeptTable dept={header.dept}>
         <h1 className="text-3xl font-semibold">{header.title}</h1>
-        <Table columns={columns} data={data} option={option}></Table>
-      </RoleTable>
+        <Table columns={columns} data={data} option={header.options}></Table>
+      </DeptTable>
     </div>
   );
 }

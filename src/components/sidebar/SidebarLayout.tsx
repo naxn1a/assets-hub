@@ -40,7 +40,7 @@ export default function SidebarLayout({
               <SidebarMenu>
                 {SidebarItem.map(
                   (item) =>
-                    item.role.includes(user!.role) && (
+                    item.dept.includes(user!.dept) && (
                       <SidebarMenuItem key={item.title} className="mt-2">
                         {item.url ? (
                           <Link href={item.url}>
@@ -59,7 +59,7 @@ export default function SidebarLayout({
                           <SidebarMenuSub>
                             {item.sub.map(
                               (sub) =>
-                                sub.role.includes(user!.role) && (
+                                sub.dept.includes(user!.dept) && (
                                   <SidebarMenuSubItem
                                     key={sub.title}
                                     className="mt-2"

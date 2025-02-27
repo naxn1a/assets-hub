@@ -1,7 +1,7 @@
 import { ErrorHandler } from "./ErrorHandler";
 
 interface FetchDataProps {
-  method?: "GET" | "POST";
+  method?: "GET" | "POST" | "PUT" | "DELETE";
   path: string;
   body?: any;
 }

@@ -1,39 +1,46 @@
 import { Home, User, Package, Clipboard, Settings } from "lucide-react";
 
 export default [
+  // Home
   {
     title: "Home",
     url: "/",
     icon: Home,
-    role: ["Admin", "Hr", "It", "Account"],
+    dept: [
+      "Admin",
+      "Human resource",
+      "Account",
+      "Information Technology",
+      "General",
+    ],
   },
-  // Hr
+  // Human resource
   {
     title: "User",
     url: "/user",
     icon: User,
-    role: ["Admin", "Hr"],
+    dept: ["Admin", "Human resource"],
   },
-  // It
+  // Information Technology
   {
     title: "Asset",
     icon: Package,
-    role: ["Admin", "It", "Hr"],
+    dept: ["Admin", "Human resource", "Information Technology"],
     sub: [
       {
         title: "Inventory",
         url: "/asset/inventory",
-        role: ["Admin", "It", "Hr"],
+        dept: ["Admin", "Information Technology"],
       },
       {
         title: "Report",
         url: "/asset/report",
-        role: ["Admin", "It", "Hr"],
+        dept: ["Admin", "Information Technology"],
       },
       {
         title: "Request",
         url: "/asset/request",
-        role: ["Admin", "It", "Hr"],
+        dept: ["Admin", "Human resource"],
       },
     ],
   },
@@ -42,13 +49,13 @@ export default [
     title: "History",
     url: "/history",
     icon: Clipboard,
-    role: ["Admin", "Account"],
+    dept: ["Admin", "Account"],
   },
   // Setting
   {
     title: "Setting",
     url: "/setting",
     icon: Settings,
-    role: ["Admin"],
+    dept: ["Admin"],
   },
 ];

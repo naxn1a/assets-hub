@@ -6,6 +6,7 @@ type AuthContextType = {
   user: {
     id: string;
     email: string;
+    dept: string;
     role: string;
   };
 };
@@ -14,6 +15,7 @@ export const AuthContext = createContext<AuthContextType>({
   user: {
     id: "",
     email: "",
+    dept: "",
     role: "",
   },
 });
@@ -31,6 +33,7 @@ export default function AuthContextProvider({
         user: {
           id: session?.user?.id,
           email: session?.user?.email,
+          dept: session?.user?.dept,
           role: session?.user?.role,
         },
       }}

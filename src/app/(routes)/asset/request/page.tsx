@@ -3,7 +3,7 @@ import { RequestColumns as columns } from "./colums";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { fetchData } from "@/utils/FetchData";
-import RoleTable from "@/components/table/RoleTable";
+import DeptTable from "@/components/table/DeptTable";
 
 const prepareFetchData = async () => {
   const res = await fetchData({
@@ -29,28 +29,27 @@ const header = {
   title: "Request Asset",
   href: "/asset/request/create",
   button: "New Request",
-  role: ["It"],
+  dept: ["Information Technology"],
+  options: {
+    search: ["user"],
+  },
 };
 
 export default async function Request() {
   const data = await prepareFetchData();
 
-  const option = {
-    search: ["serial", "name"],
-  };
-
   return (
     <div className="flex flex-col gap-8 mb-8">
-      <RoleTable role="It">
+      <DeptTable dept={header.dept}>
         <h1 className="text-3xl font-semibold">{header.title}</h1>
-        <Table columns={columns} data={data} option={option}>
+        <Table columns={columns} data={data} option={header.options}>
           <div className="flex justify-end">
             <Link href={header.href}>
               <Button>{header.button}</Button>
             </Link>
           </div>
         </Table>
-      </RoleTable>
+      </DeptTable>
     </div>
   );
 }

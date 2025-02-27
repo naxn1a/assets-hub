@@ -18,7 +18,10 @@ export const authOptions = {
 
         const user = await prisma.user.findUnique({
           where: { email: credentials.email },
-          include: { role: true },
+          include: {
+            department: true,
+            role: true,
+          },
         });
 
         if (!user) throw new Error("User not found or password is incorrect");
@@ -45,7 +48,7 @@ export const authOptions = {
     async jwt({ token, user }: { token: any; user?: any }) {
       if (user) {
         token.id = user.id;
-        // token.dept = user.department.name;
+        token.dept = user.department.name;
         token.role = user.role.name;
       }
       return token;
@@ -53,7 +56,7 @@ export const authOptions = {
     async session({ session, token }: { session: any; token: any }) {
       if (token) {
         session.user.id = token.id;
-        // session.dept = token.department.name;
+        session.user.dept = token.dept;
         session.user.role = token.role;
       }
       return session;
