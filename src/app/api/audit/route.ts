@@ -1,7 +1,7 @@
 import prisma from "@/database";
+import { UserSession } from "@/utils/auth/UserSession";
 import { ErrorHandler, SendHandler } from "@/utils/ErrorHandler";
 import { AuditLogStatus, AuditLogType } from "@prisma/client";
-import { getServerSession } from "next-auth";
 
 export async function GET() {
   const audit = await prisma.auditLog.findMany({
@@ -11,6 +11,9 @@ export async function GET() {
       reported_by: true,
       handled_by: true,
     },
+    orderBy: {
+      created_at: "desc",
+    },
   });
 
   return SendHandler(audit);
@@ -19,14 +22,9 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const session = await getServerSession();
-
-    if (!session) throw new Error("Unauthorized");
 
     const result = await prisma.$transaction(async (tx) => {
-      const reported_by = await tx.user.findUnique({
-        where: { email: session?.user?.email ?? undefined },
-      });
+      const reported_by = await UserSession("Human resource");
 
       if (!reported_by) throw new Error("Reported not found");
 
