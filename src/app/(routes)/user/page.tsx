@@ -8,6 +8,7 @@ import { formatDate } from "@/utils/Date";
 
 const prepareFetchData = async () => {
   const res = await fetchData({ path: "/user" });
+  if (!res.data) return [];
   return res.data.map((item: any) => {
     return {
       id: item.id,

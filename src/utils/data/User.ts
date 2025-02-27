@@ -14,6 +14,7 @@ export type UserType = {
 };
 
 export const filterUser = (name: string, data: any[]) => {
+  if (!data) return { name, data: [] };
   return {
     name,
     data: data.map((item) => item.name),
