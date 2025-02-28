@@ -6,7 +6,8 @@ import { UserSession } from "@/utils/auth/UserSession";
 
 const prepareFetchData = async () => {
   const user = await UserSession();
-  if (!user) throw new Error("Unauthorized");
+
+  if (!user) return [];
 
   const res = await fetchData({
     path: `/user/asset/${user.id}`,

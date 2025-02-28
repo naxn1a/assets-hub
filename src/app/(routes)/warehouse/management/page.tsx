@@ -8,7 +8,7 @@ const prepareFetchData = async () => {
   const res = await fetchData({
     method: "POST",
     path: "/audit/status",
-    body: { status: [AuditLogStatus.Pending] },
+    body: { status: [AuditLogStatus.Pending, AuditLogStatus.InProgress] },
   });
 
   if (!res.data) return [];

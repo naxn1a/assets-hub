@@ -22,7 +22,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { handleSubmit } from "./_actions";
-import { AssetStatus as s } from "@prisma/client";
+import { AuditLogType } from "@prisma/client";
 
 export const Columns: ColumnDef<any>[] = [
   {
@@ -79,8 +79,10 @@ export const Columns: ColumnDef<any>[] = [
                   <SelectValue placeholder="Select" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value={s.Maintenance}>Repair</SelectItem>
-                  <SelectItem value={s.Returned}>Return</SelectItem>
+                  <SelectItem value={AuditLogType.Maintenance}>
+                    Repair
+                  </SelectItem>
+                  <SelectItem value={AuditLogType.Return}>Return</SelectItem>
                 </SelectContent>
               </Select>
               <Button

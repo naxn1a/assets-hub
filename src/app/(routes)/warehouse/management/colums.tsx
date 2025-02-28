@@ -12,8 +12,21 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { handleApprove, handleReject } from "./_actions";
 import TextColor from "@/components/table/TextColor";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useState } from "react";
+import {
+  AuditLogStatus,
+  AuditLogType,
+  AuditLogStatus as s,
+} from "@prisma/client";
+import { onSubmit } from "./_actions";
 
 export const ManagementColumns: ColumnDef<any>[] = [
   {
@@ -56,6 +69,8 @@ export const ManagementColumns: ColumnDef<any>[] = [
     id: "actions",
     cell: ({ row }) => {
       const data = row.original;
+      const [status, setStatus] = useState("");
+
       return (
         <Dialog>
           <DialogTrigger asChild>
@@ -65,15 +80,41 @@ export const ManagementColumns: ColumnDef<any>[] = [
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
-              <DialogTitle>Do you want to approve it?</DialogTitle>
+              <DialogTitle>What do you want to do?</DialogTitle>
             </DialogHeader>
             <DialogDescription></DialogDescription>
             <DialogFooter>
-              <Button onClick={() => handleApprove(data)} variant="default">
-                Yes
-              </Button>
-              <Button onClick={() => handleReject(data)} variant="secondary">
-                No
+              <Select onValueChange={setStatus}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select" />
+                </SelectTrigger>
+                <SelectContent>
+                  {data.type === AuditLogType.Assignment ||
+                  data.type === AuditLogType.Return ? (
+                    <>
+                      <SelectItem value={s.Approved}>Approve</SelectItem>
+                      <SelectItem value={s.Rejected}>Reject</SelectItem>
+                    </>
+                  ) : data.type === AuditLogType.Maintenance &&
+                    data.status === AuditLogStatus.InProgress ? (
+                    <>
+                      <SelectItem value={s.Completed}>Complete</SelectItem>
+                      <SelectItem value={s.Cancelled}>Cancel</SelectItem>
+                    </>
+                  ) : data.type === AuditLogType.Maintenance ? (
+                    <>
+                      <SelectItem value={s.InProgress}>In Progress</SelectItem>
+                      <SelectItem value={s.Rejected}>Reject</SelectItem>
+                    </>
+                  ) : null}
+                </SelectContent>
+              </Select>
+              <Button
+                onClick={() => onSubmit(data, status)}
+                variant={status ? "default" : "secondary"}
+                className={status ? "" : "cursor-not-allowed"}
+              >
+                Submit
               </Button>
             </DialogFooter>
           </DialogContent>

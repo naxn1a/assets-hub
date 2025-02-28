@@ -11,13 +11,14 @@ export default function TextColor({ status }: { status: any }) {
     [
       UserStatus.Active,
       AssetStatus.Available,
-      AssetStatus.Returned,
       AuditLogStatus.Approved,
       AuditLogStatus.Completed,
     ].includes(status)
   ) {
     color = "bg-green-100 text-green-700";
-  } else if (status === AssetStatus.Assigned) {
+  } else if (
+    [AssetStatus.Assigned, AuditLogStatus.InProgress].includes(status)
+  ) {
     color = "bg-blue-100 text-blue-700";
   } else if (
     [

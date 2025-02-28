@@ -1,9 +1,53 @@
 import { toast } from "@/hooks/use-toast";
 import { fetchData } from "@/utils/FetchData";
-import { AssetStatus, AuditLogStatus } from "@prisma/client";
+import { AssetStatus, AuditLogStatus, AuditLogType } from "@prisma/client";
 
-export async function handleApprove(data: any) {
-  const res_asset = await fetchData({
+export async function onSubmit(data: any, status: string) {
+  if (!status) return;
+
+  try {
+    if (status === AuditLogStatus.Approved) {
+      if (data.type === AuditLogType.Assignment) {
+        await handleAssign(data);
+      } else if (data.type === AuditLogType.Return) {
+        await handleReturn(data);
+      }
+    } else if (status === AuditLogStatus.InProgress) {
+      await handleInProgress(data);
+    } else if (status === AuditLogStatus.Completed) {
+      await handleCompleted(data);
+    } else if (status === AuditLogStatus.Cancelled) {
+      await handleCancel(data);
+    }
+
+    const audit = await fetchData({
+      method: "PUT",
+      path: `/audit/${data.id}`,
+      body: {
+        status,
+      },
+    });
+
+    if (audit.status === "error") throw new Error(audit.message);
+
+    toast({
+      title: "Success",
+      description: "Data has been saved",
+    });
+
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
+  } catch (error) {
+    return toast({
+      title: "Failed",
+      description: `${error}`,
+    });
+  }
+}
+
+async function handleAssign(data: any) {
+  const res = await fetchData({
     method: "PUT",
     path: `/asset/status/${data.asset_id}`,
     body: {
@@ -12,60 +56,54 @@ export async function handleApprove(data: any) {
     },
   });
 
-  if (res_asset.status === "error") {
-    return toast({
-      title: "Failed",
-      description: res_asset.message,
-    });
-  }
-
-  const res_audit = await fetchData({
-    method: "PUT",
-    path: `/audit/${data.id}`,
-    body: {
-      status: AuditLogStatus.Approved,
-    },
-  });
-
-  if (res_audit.status === "error") {
-    return toast({
-      title: "Failed",
-      description: res_audit.message,
-    });
-  }
-
-  toast({
-    title: "Success",
-    description: "Asset has been approved",
-  });
-
-  setTimeout(() => {
-    window.location.reload();
-  }, 1000);
+  if (res.status === "error") throw new Error(res.message);
 }
 
-export async function handleReject(data: any) {
-  const res_audit = await fetchData({
+async function handleReturn(data: any) {
+  const res = await fetchData({
     method: "PUT",
-    path: `/audit/${data.id}`,
+    path: `/asset/status/${data.asset_id}`,
     body: {
-      status: AuditLogStatus.Rejected,
+      status: AssetStatus.Available,
+      user_id: null,
     },
   });
 
-  if (res_audit.status === "error") {
-    return toast({
-      title: "Failed",
-      description: res_audit.message,
-    });
-  }
+  if (res.status === "error") throw new Error(res.message);
+}
 
-  toast({
-    title: "Success",
-    description: "Asset has been rejected",
+async function handleInProgress(data: any) {
+  const res = await fetchData({
+    method: "PUT",
+    path: `/asset/status/${data.asset_id}`,
+    body: {
+      status: AssetStatus.Maintenance,
+    },
   });
 
-  setTimeout(() => {
-    window.location.reload();
-  }, 1000);
+  if (res.status === "error") throw new Error(res.message);
+}
+
+async function handleCompleted(data: any) {
+  const res = await fetchData({
+    method: "PUT",
+    path: `/asset/status/${data.asset_id}`,
+    body: {
+      status: AssetStatus.Assigned,
+    },
+  });
+
+  if (res.status === "error") throw new Error(res.message);
+}
+
+async function handleCancel(data: any) {
+  const res = await fetchData({
+    method: "PUT",
+    path: `/asset/status/${data.asset_id}`,
+    body: {
+      status: AssetStatus.Disposed,
+    },
+  });
+
+  if (res.status === "error") throw new Error(res.message);
 }

@@ -4,10 +4,15 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { fetchData } from "@/utils/FetchData";
 import DeptTable from "@/components/table/DeptTable";
+import { UserSession } from "@/utils/auth/UserSession";
 
 const prepareFetchData = async () => {
+  const user = await UserSession();
+
+  if (!user) return [];
+
   const res = await fetchData({
-    path: "/audit",
+    path: `/user/audit/${user.id}`,
   });
 
   if (!res.data) return [];
@@ -47,7 +52,7 @@ const header = {
   title: "Request Asset",
   href: "/warehouse/request/create",
   button: "New Request",
-  dept: ["Information Technology"],
+  dept: ["Human resource"],
   options: {
     search: ["user"],
   },

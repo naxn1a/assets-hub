@@ -1,3 +1,4 @@
+import { AssetStatus } from "@prisma/client";
 import { z } from "zod";
 
 export type AssetType = {
@@ -52,21 +53,7 @@ export const Data = [
   },
 ];
 
-export const Status = [
-  {
-    id: "Available",
-    name: "Available",
-  },
-  {
-    id: "Assigned",
-    name: "Assigned",
-  },
-  {
-    id: "UnderRepair",
-    name: "UnderRepair",
-  },
-  {
-    id: "Disposed",
-    name: "Disposed",
-  },
-];
+export const Status = Object.keys(AssetStatus).map((key) => ({
+  id: key,
+  name: key,
+}));

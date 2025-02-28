@@ -61,7 +61,6 @@ enum AssetStatus {
   Available // พร้อมใช้งาน
   Assigned // ถูกมอบหมาย
   Maintenance // ซ่อมบำรุง
-  Returned // คืน
   Disposed // ถูกกำจัด
   Lost // สูญหาย
 }
@@ -84,12 +83,10 @@ model Asset {
 }
 
 enum AuditLogType {
-  Request // การขอใช้งานทรัพย์สิน
-  Transfer // การโอนย้ายทรัพย์สิน
-  Approval // การอนุมัติคำขอ
   Assignment // การมอบหมายทรัพย์สินให้ผู้ใช้งาน
-  Return // การคืนทรัพย์สิน
+  Transfer // การโอนย้ายทรัพย์สิน
   Maintenance // การซ่อมบำรุงหรือตรวจสอบทรัพย์สิน
+  Return // การคืนทรัพย์สิน
   Disposal // การกำจัดทรัพย์สิน
 }
 
