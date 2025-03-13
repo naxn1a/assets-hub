@@ -20,6 +20,7 @@ export default function DatePicker({ value, change, props }: DatePickerType) {
           change(date?.toString());
         }}
         dateFormat="dd/MM/yyyy"
+        todayButton="Today"
       />
     </Button>
   );
