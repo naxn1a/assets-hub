@@ -46,6 +46,8 @@ export default function MyField({
                 <DatePicker
                   value={field.value}
                   change={(date: Date) => field.onChange(date)}
+                  minDate={options?.minDate || null}
+                  maxDate={options?.maxDate || null}
                 />
               </div>
             ) : type === "checkbox" ? (
