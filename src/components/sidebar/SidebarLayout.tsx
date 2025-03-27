@@ -90,6 +90,9 @@ export default function SidebarLayout({
         <div className="flex justify-between items-center py-4 px-8">
           <SidebarTrigger />
           <div className="flex items-center space-x-4">
+            <p className="text-lg font-semibold">
+              {user!.email} | {user!.dept}
+            </p>
             <ModeToggle />
           </div>
         </div>
