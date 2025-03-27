@@ -8,7 +8,7 @@ export async function GET(
   try {
     const result = await prisma.auditLog.findMany({
       where: {
-        user_id: (await params).id,
+        reported_by_id: (await params).id,
       },
       include: {
         asset: true,
